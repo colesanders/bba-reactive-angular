@@ -1,14 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import {
-  LESSONS_FEATURE_KEY,
-  LessonsState,
-  LessonsPartialState,
-  lessonsAdapter
-} from './lessons.reducer';
+
+import { LESSONS_FEATURE_KEY, lessonsAdapter, LessonsState } from './lessons.reducer';
 
 // Lookup the 'Lessons' feature state managed by NgRx
 export const getLessonsState = createFeatureSelector<
-  LessonsPartialState,
   LessonsState
 >(LESSONS_FEATURE_KEY);
 
