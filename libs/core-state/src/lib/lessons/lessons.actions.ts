@@ -73,7 +73,7 @@ export const updateLessonFailure = createAction(
 
 // Delete Lesson
 export const deleteLesson = createAction(
-  '[Lessons] Lesson Lesson',
+  '[Lessons] Delete Lesson',
   props<{ lesson: Lesson }>()
 );
 

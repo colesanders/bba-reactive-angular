@@ -73,7 +73,7 @@ export const updateUserFailure = createAction(
 
 // Delete User
 export const deleteUser = createAction(
-  '[Users] User User',
+  '[Users] Delete User',
   props<{ user: User }>()
 );
 

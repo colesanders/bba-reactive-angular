@@ -4,13 +4,37 @@
       "id": "1",
       "title": "Angular Course",
       "description": "This is an Angular Course"
+    },
+    {
+      "id": "2",
+      "title": "React Course",
+      "description": "This is a React Course"
     }
   ],
   "lessons": [
     {
       "id": "1",
       "title": "Angular Lesson",
-      "description": "This is an Angular Lesson"
+      "description": "This is an Angular Lesson",
+      "course_id": "1"
+    },
+    {
+      "id": "2",
+      "title": "Another Angular Lesson",
+      "description": "This is an Angular Lesson",
+      "course_id": "1"
+    },
+    {
+      "id": "3",
+      "title": "React Lesson",
+      "description": "This is a React Lesson",
+      "course_id": "2"
+    },
+    {
+      "id": "2",
+      "title": "Another React Lesson",
+      "description": "This is a React Lesson",
+      "course_id": "2"
     }
   ],
   "users": [

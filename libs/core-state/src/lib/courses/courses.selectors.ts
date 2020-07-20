@@ -1,4 +1,6 @@
+import { Course } from '@bba/api-interfaces';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { empty } from 'rxjs';
 import {
   COURSES_FEATURE_KEY,
   CoursesState,
@@ -39,8 +41,12 @@ export const getSelectedCourseId = createSelector(
   (state: CoursesState) => state.selectedId
 );
 
+const emptyCourse: Course = { id: null, title: '', description: '' };
+
 export const getSelectedCourse = createSelector(
   getCoursesEntities,
   getSelectedCourseId,
-  (entities, selectedId) => selectedId && entities[selectedId]
+  (entities, selectedId) => {
+    return selectedId ? entities[selectedId] : emptyCourse;
+  }
 );

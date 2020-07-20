@@ -12,6 +12,7 @@ export interface Lesson {
   id: string,
   title: string,
   description: string,
+  course_id: string,
 }
 
 export interface User {
