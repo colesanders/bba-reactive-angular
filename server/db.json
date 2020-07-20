@@ -1,0 +1,26 @@
+{
+  "courses": [
+    {
+      "id": "1",
+      "title": "Angular Course",
+      "description": "This is an Angular Course"
+    }
+  ],
+  "lessons": [
+    {
+      "id": "1",
+      "title": "Angular Lesson",
+      "description": "This is an Angular Lesson"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "title": "Angular User",
+      "firstName:": "Angular",
+      "lastName": "User",
+      "email": "test@test.com",
+      "password": "insecure"
+    }
+  ]
+}
