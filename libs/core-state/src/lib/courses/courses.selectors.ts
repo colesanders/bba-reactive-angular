@@ -1,16 +1,10 @@
 import { Course } from '@bba/api-interfaces';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { empty } from 'rxjs';
-import {
-  COURSES_FEATURE_KEY,
-  CoursesState,
-  CoursesPartialState,
-  coursesAdapter
-} from './courses.reducer';
+
+import { COURSES_FEATURE_KEY, coursesAdapter, CoursesState } from './courses.reducer';
 
 // Lookup the 'Courses' feature state managed by NgRx
 export const getCoursesState = createFeatureSelector<
-  CoursesPartialState,
   CoursesState
 >(COURSES_FEATURE_KEY);
 
