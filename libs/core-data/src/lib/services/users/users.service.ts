@@ -12,11 +12,11 @@ export class UsersService {
   constructor(private http: HttpClient) { }
 
   all() {
-    return this.http.get(this.getUrl());
+    return this.http.get<User[]>(this.getUrl());
   }
 
   find(id: string) {
-    return this.http.get(this.getUrlWithId(id));
+    return this.http.get<User>(this.getUrlWithId(id));
   }
 
   create(user: User) {
