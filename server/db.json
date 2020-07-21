@@ -21,7 +21,7 @@
     {
       "id": "2",
       "title": "Another Angular Lesson",
-      "description": "This is an Angular Lesson",
+      "description": "This is another Angular Lesson",
       "course_id": "1"
     },
     {
@@ -31,9 +31,9 @@
       "course_id": "2"
     },
     {
-      "id": "2",
+      "id": "4",
       "title": "Another React Lesson",
-      "description": "This is a React Lesson",
+      "description": "This is another React Lesson",
       "course_id": "2"
     }
   ],
@@ -41,7 +41,7 @@
     {
       "id": "1",
       "title": "Angular User",
-      "firstName:": "Angular",
+      "firstName": "Angular",
       "lastName": "User",
       "email": "test@test.com",
       "password": "insecure"

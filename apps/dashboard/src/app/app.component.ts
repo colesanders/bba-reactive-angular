@@ -13,7 +13,7 @@ export enum SidenavStatus {
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'Application';
+  title = 'Reactive Application';
   links = [
     { path: '/home', icon: 'home', title: 'Home' },
     { path: '/courses', icon: 'view_list', title: 'Courses' },
