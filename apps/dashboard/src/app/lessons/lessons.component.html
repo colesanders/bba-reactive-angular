@@ -6,7 +6,7 @@
     </bba-lessons-list>
   </div>
   <div class="details-component">
-    <bba-lesson-details [lesson]="selectedLesson$ | async"
+    <bba-lesson-details [lesson]="selectedLesson"
       (saved)="saveLesson($event)"
       (cancelled)="reset()">
     </bba-lesson-details>

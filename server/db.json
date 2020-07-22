@@ -45,6 +45,14 @@
       "lastName": "User",
       "email": "test@test.com",
       "password": "insecure"
+    },
+    {
+      "id": "2",
+      "title": "React User",
+      "firstName": "React",
+      "lastName": "User",
+      "email": "test@test.com",
+      "password": "insecure"
     }
   ]
 }
