@@ -17,8 +17,8 @@ export class AppComponent {
   links = [
     { path: '/home', icon: 'home', title: 'Home' },
     { path: '/courses', icon: 'view_list', title: 'Courses' },
-    { path: '/lessons', icon: 'view_list', title: 'Lessons' },
-    { path: '/users', icon: 'view_list', title: 'Users' },
+    { path: '/lessons', icon: 'assignment', title: 'Lessons' },
+    { path: '/users', icon: 'account_circle', title: 'Users' },
   ];
 
   isAuthenticated$: Observable<boolean> = of(true);
