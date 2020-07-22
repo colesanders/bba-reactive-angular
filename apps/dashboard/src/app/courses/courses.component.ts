@@ -10,14 +10,14 @@ import { CoursesFacade } from '@bba/core-state';
 })
 export class CoursesComponent implements OnInit {
   courses$: Observable<Course[]> = this.coursesFacade.allCourses$;
-  selectedCourse$ = this.coursesFacade.selectedCourse$;
+  selectedCourse$: Observable<Course> = this.coursesFacade.selectedCourse$;
 
   constructor(
     private coursesFacade: CoursesFacade
   ) { }
 
   ngOnInit(): void {
-    this.loadCourses();
+    this.reset();
     this.coursesFacade.mutations$.subscribe(_ => this.reset());
   }
 
@@ -26,12 +26,12 @@ export class CoursesComponent implements OnInit {
     this.coursesFacade.selectCourse(null);
   }
 
-  loadCourses() {
-    this.coursesFacade.loadCourses();
-  }
-
   selectCourse(course: Course) {
     this.coursesFacade.selectCourse(course.id);
+  }
+
+  loadCourses() {
+    this.coursesFacade.loadCourses();
   }
 
   saveCourse(course: Course) {
