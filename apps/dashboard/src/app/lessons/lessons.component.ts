@@ -2,22 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Lesson } from '@bba/api-interfaces';
 import { LessonsService } from '@bba/core-data';
+import { LessonsFacade } from '@bba/core-state';
 
 @Component({
   selector: 'bba-lessons',
   templateUrl: './lessons.component.html',
-  styleUrls: ['./lessons.component.scss']
+  styleUrls: ['./lessons.component.scss'],
 })
 export class LessonsComponent implements OnInit {
-  lessons$: Observable<Lesson[]>;
-  selectedLesson: Lesson;
+  lessons$: Observable<Lesson[]> = this.lessonsFacade.allLessons$;
+  selectedLesson$: Observable<Lesson> = this.lessonsFacade.selectedLessons$;
 
-  constructor(
-    private lessonsService: LessonsService
-  ) { }
+  constructor(private lessonsFacade: LessonsFacade) {}
 
   ngOnInit(): void {
-    this.loadLessons();
+    this.reset();
+    this.lessonsFacade.mutations$.subscribe((_) => this.reset())
   }
 
   reset() {
@@ -26,31 +26,30 @@ export class LessonsComponent implements OnInit {
   }
 
   selectLesson(lesson: Lesson) {
-    this.selectedLesson = lesson;
+    this.lessonsFacade.selectLesson(lesson);
   }
 
-  loadLessons() { this.lessons$ = this.lessonsService.all();}
+  loadLessons() {
+    this.lessonsFacade.loadLessons();
+  }
 
   saveLesson(lesson: Lesson) {
     if (lesson.id) {
-      this.updateLesson(lesson);
+      this.lessonsFacade.saveLesson(lesson);
     } else {
-      this.createLesson(lesson);
+      this.lessonsFacade.createLesson(lesson);
     }
   }
 
   createLesson(lesson: Lesson) {
-    this.lessonsService.create(lesson)
-      .subscribe(_ => this.reset());
+    this.lessonsFacade.createLesson(lesson);
   }
 
   updateLesson(lesson: Lesson) {
-    this.lessonsService.update(lesson)
-      .subscribe(_ => this.reset());
+    this.lessonsFacade.updateLesson(lesson);
   }
 
   deleteLesson(lesson: Lesson) {
-    this.lessonsService.delete(lesson.id)
-      .subscribe(_ => this.reset());
+    this.lessonsFacade.deleteLesson(lesson);
   }
 }

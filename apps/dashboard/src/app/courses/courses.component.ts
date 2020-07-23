@@ -2,22 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Course } from '@bba/api-interfaces';
 import { CoursesService } from '@bba/core-data';
+import { CoursesFacade } from '@bba/core-state';
 
 @Component({
   selector: 'bba-courses',
   templateUrl: './courses.component.html',
-  styleUrls: ['./courses.component.scss']
+  styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit {
-  courses$: Observable<Course[]>;
-  selectedCourse: Course;
+  // 01: Queries
+  courses$: Observable<Course[]> = this.coursesFacade.allCourses$;
+  selectedCourse$: Observable<Course> = this.coursesFacade.selectedCourses$;
 
-  constructor(
-    private coursesService: CoursesService
-  ) { }
+  // 00: Update service
+  constructor(private coursesFacade: CoursesFacade) {}
 
   ngOnInit(): void {
-    this.loadCourses();
+    // 04: cleanup
+    this.reset();
+    this.coursesFacade.mutations$.subscribe((_) => this.reset())
   }
 
   reset() {
@@ -25,32 +28,32 @@ export class CoursesComponent implements OnInit {
     this.selectCourse(null);
   }
 
+  // 02: Commands
   selectCourse(course: Course) {
-    this.selectedCourse = course;
+    this.coursesFacade.selectCourse(course);
   }
 
-  loadCourses() { this.courses$ = this.coursesService.all();}
+  loadCourses() {
+    this.coursesFacade.loadCourses();
+  }
 
   saveCourse(course: Course) {
     if (course.id) {
-      this.updateCourse(course);
+      this.coursesFacade.saveCourse(course);
     } else {
-      this.createCourse(course);
+      this.coursesFacade.createCourse(course);
     }
   }
 
   createCourse(course: Course) {
-    this.coursesService.create(course)
-      .subscribe(_ => this.reset());
+    this.coursesFacade.createCourse(course);
   }
 
   updateCourse(course: Course) {
-    this.coursesService.update(course)
-      .subscribe(_ => this.reset());
+    this.coursesFacade.updateCourse(course);
   }
 
   deleteCourse(course: Course) {
-    this.coursesService.delete(course.id)
-      .subscribe(_ => this.reset());
+    this.coursesFacade.deleteCourse(course);
   }
 }
