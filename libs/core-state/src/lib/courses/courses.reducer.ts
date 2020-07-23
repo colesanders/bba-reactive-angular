@@ -1,4 +1,3 @@
-
 import { Course } from '@bba/api-interfaces';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Action, createReducer, on } from '@ngrx/store';
@@ -6,7 +5,6 @@ import { Action, createReducer, on } from '@ngrx/store';
 import * as CoursesActions from './courses.actions';
 
 export const COURSES_FEATURE_KEY = 'courses';
-
 
 export interface CoursesState extends EntityState<Course> {
   selectedId?: string | number; // which Courses record has been selected

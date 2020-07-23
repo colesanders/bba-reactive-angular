@@ -1,4 +1,10 @@
+import { Lesson } from '@bba/api-interfaces';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { Action, createReducer, on } from '@ngrx/store';
 
+import * as LessonsActions from './lessons.actions';
+
+export const LESSONS_FEATURE_KEY = 'lessons';
 
 // HELPER: Initial state
 const inititalState = [

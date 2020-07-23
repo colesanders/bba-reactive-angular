@@ -1,0 +1,3 @@
+describe('Lessons Reducer', () => {
+  beforeEach(() => {});
+});
