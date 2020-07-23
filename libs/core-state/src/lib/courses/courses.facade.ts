@@ -3,7 +3,10 @@ import { Course } from '@bba/api-interfaces';
 import { CoursesService } from '@bba/core-data';
 import { Action, ActionsSubject, select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
+
+// 00: Import from reducer
+import * as fromCourses from './courses.reducer';
 
 import * as CoursesActions from './courses.actions';
 import * as CoursesSelectors from './courses.selectors';
@@ -12,19 +15,25 @@ import * as CoursesSelectors from './courses.selectors';
   providedIn: 'root',
 })
 export class CoursesFacade {
-  // 00: Create your subjects
   private allCourses = new Subject<Course[]>();
   private selectedCourse = new Subject<Course>();
   private mutations = new Subject();
-  // 01: Expose as observables
-  allCourses$ = this.allCourses.asObservable();
+
   selectedCourses$ = this.selectedCourse.asObservable();
   mutations$ = this.mutations.asObservable();
 
-  // 02: Inject service
-  constructor(private coursesService: CoursesService) {}
+  // 02: Update query
+  allCourses$ = this.store.pipe(
+    select('courses'),
+    map(state => state.courses)
+  );
 
-  // 03: Subject.next functions
+  // 01: Inject the store
+  constructor(
+    private coursesService: CoursesService,
+    private store: Store<fromCourses.CoursesPartialState>
+  ) {}
+
   reset() {
     this.mutations.next(true);
   }
@@ -39,7 +48,6 @@ export class CoursesFacade {
       .subscribe((courses: Course[]) => this.allCourses.next(courses));
   }
 
-  // 04: Remaining CRUD functions
   saveCourse(course: Course) {
     if (course.id) {
       this.updateCourse(course);

@@ -7,31 +7,31 @@ import * as LessonsActions from './lessons.actions';
 export const LESSONS_FEATURE_KEY = 'lessons';
 
 // HELPER: Initial state
-const inititalState = [
+const inititalLessons = [
   {
     id: '1',
     title: 'Angular Lesson',
     description: 'This is an Angular Lesson',
-    course_id: '1'
+    course_id: '1',
   },
   {
     id: '2',
     title: 'Another Angular Lesson',
     description: 'This is another Angular Lesson',
-    course_id: '1'
+    course_id: '1',
   },
   {
     id: '3',
     title: 'React Lesson',
     description: 'This is a React Lesson',
-    course_id: '2'
+    course_id: '2',
   },
   {
     id: '4',
     title: 'Another React Lesson',
     description: 'This is another React Lesson',
-    course_id: '2'
-  }
+    course_id: '2',
+  },
 ];
 
 // HELPER: Immutable operations
@@ -41,3 +41,27 @@ const update = (collection, obj) =>
     return i.id === obj.id ? Object.assign({}, obj) : i;
   });
 const remove = (collection, obj) => collection.filter((i) => i.id === obj.id);
+
+export interface LessonsPartialState {
+  readonly [LESSONS_FEATURE_KEY]: LessonsState;
+}
+
+export interface LessonsState {
+  selectedId: string | null;
+  lessons: Lesson[];
+}
+
+export const initialLessonsState: LessonsState = {
+  selectedId: null,
+  lessons: inititalLessons,
+};
+
+export function lessonsReducer(
+  state: LessonsState = initialLessonsState,
+  action: Action
+) {
+  switch (action.type) {
+    default:
+      return state;
+  }
+}
