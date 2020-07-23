@@ -18,11 +18,9 @@
       </span>
       <mat-divider></mat-divider>
       <mat-nav-list>
-        <mat-list-item *ngFor="let link of links">
+        <mat-list-item *ngFor="let link of links" [routerLink]="link.path" routerLinkActive="active">
           <mat-icon matListIcon>{{link.icon}}</mat-icon>
-          <a matLine [routerLink]="link.path" routerLinkActive="active">
-            {{link.title | uppercase}}
-          </a>
+          {{link.title | uppercase}}
         </mat-list-item>
       </mat-nav-list>
     </ng-container>
