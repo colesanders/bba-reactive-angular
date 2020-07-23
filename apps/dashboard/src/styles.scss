@@ -43,14 +43,16 @@ mat-card {
   background-color: #000;
 }
 
-.nav-link {
-  &.mat-button {
-    border-radius: 0px !important;
-  }
-
+.mat-list-item {
   mat-icon {
     font-size: 28px;
     margin-right: 15px;
+  }
+}
+
+.nav-link {
+  &.mat-button {
+    border-radius: 0px !important;
   }
 
   span {
