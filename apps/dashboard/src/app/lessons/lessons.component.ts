@@ -8,7 +8,6 @@ import { LessonsService } from '@bba/core-data';
   templateUrl: './lessons.component.html',
   styleUrls: ['./lessons.component.scss']
 })
-
 export class LessonsComponent implements OnInit {
   lessons$: Observable<Lesson[]>;
   selectedLesson: Lesson;
