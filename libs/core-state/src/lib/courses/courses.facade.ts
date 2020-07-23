@@ -5,7 +5,6 @@ import { Action, ActionsSubject, select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
-// 00: Import from reducer
 import * as fromCourses from './courses.reducer';
 
 import * as CoursesActions from './courses.actions';
@@ -15,20 +14,16 @@ import * as CoursesSelectors from './courses.selectors';
   providedIn: 'root',
 })
 export class CoursesFacade {
-  private allCourses = new Subject<Course[]>();
   private selectedCourse = new Subject<Course>();
   private mutations = new Subject();
 
   selectedCourses$ = this.selectedCourse.asObservable();
   mutations$ = this.mutations.asObservable();
-
-  // 02: Update query
   allCourses$ = this.store.pipe(
     select('courses'),
-    map(state => state.courses)
+    map((state) => state.courses)
   );
 
-  // 01: Inject the store
   constructor(
     private coursesService: CoursesService,
     private store: Store<fromCourses.CoursesPartialState>
@@ -45,7 +40,9 @@ export class CoursesFacade {
   loadCourses() {
     this.coursesService
       .all()
-      .subscribe((courses: Course[]) => this.allCourses.next(courses));
+      .subscribe((courses: Course[]) =>
+        this.store.dispatch({ type: 'setAllCourses', courses })
+      );
   }
 
   saveCourse(course: Course) {
@@ -57,14 +54,14 @@ export class CoursesFacade {
   }
 
   createCourse(course: Course) {
-    this.coursesService.create(course).subscribe((_) => this.reset());
+    this.store.dispatch({ type: 'createCourse', course });
   }
 
   updateCourse(course: Course) {
-    this.coursesService.update(course).subscribe((_) => this.reset());
+    this.store.dispatch({ type: 'updateCourse', course });
   }
 
   deleteCourse(course: Course) {
-    this.coursesService.delete(course.id).subscribe((_) => this.reset());
+    this.store.dispatch({ type: 'deleteCourse', course });
   }
 }

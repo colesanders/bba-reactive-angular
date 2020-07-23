@@ -32,24 +32,46 @@ export interface CoursesPartialState {
   readonly [COURSES_FEATURE_KEY]: CoursesState;
 }
 
-// 00: Define state interface
 export interface CoursesState {
   selectedId: string | null;
   courses: Course[];
 }
 
-// 01: Define initial state
 export const initialCoursesState: CoursesState = {
   selectedId: null,
   courses: inititalCourses,
 };
 
-// 02: Create simple reducer
 export function coursesReducer(
   state: CoursesState = initialCoursesState,
   action: Action
 ) {
   switch (action.type) {
+    case 'selectCourse':
+      return {
+        selectedId: action['selectedId'],
+        courses: state.courses,
+      };
+    case 'setAllCourses':
+      return {
+        selectedId: state.selectedId,
+        courses: action['courses']
+      };
+    case 'createCourse':
+      return {
+        selectedId: state.selectedId,
+        courses: create(state.courses, action['course']),
+      };
+    case 'updateCourse':
+      return {
+        selectedId: state.selectedId,
+        courses: update(state.courses, action['course']),
+      };
+    case 'removeCourse':
+      return {
+        selectedId: state.selectedId,
+        courses: remove(state.courses, action['course']),
+      };
     default:
       return state;
   }

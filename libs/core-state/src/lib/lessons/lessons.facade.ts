@@ -3,7 +3,9 @@ import { Lesson } from '@bba/api-interfaces';
 import { LessonsService } from '@bba/core-data';
 import { Action, ActionsSubject, select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
+
+import * as fromLessons from './lessons.reducer';
 
 import * as LessonsActions from './lessons.actions';
 import * as LessonsSelectors from './lessons.selectors';
@@ -12,15 +14,20 @@ import * as LessonsSelectors from './lessons.selectors';
   providedIn: 'root',
 })
 export class LessonsFacade {
-  private allLessons = new Subject<Lesson[]>();
   private selectedLesson = new Subject<Lesson>();
   private mutations = new Subject();
 
-  allLessons$ = this.allLessons.asObservable();
   selectedLessons$ = this.selectedLesson.asObservable();
   mutations$ = this.mutations.asObservable();
+  allLessons$ = this.store.pipe(
+    select('lessons'),
+    map((state) => state.lessons)
+  );
 
-  constructor(private lessonsService: LessonsService) {}
+  constructor(
+    private lessonsService: LessonsService,
+    private store: Store<fromLessons.LessonsPartialState>
+  ) {}
 
   reset() {
     this.mutations.next(true);
@@ -33,10 +40,11 @@ export class LessonsFacade {
   loadLessons() {
     this.lessonsService
       .all()
-      .subscribe((lessons: Lesson[]) => this.allLessons.next(lessons));
+      .subscribe((lessons: Lesson[]) =>
+        this.store.dispatch({ type: 'setAllLessons', lessons })
+      );
   }
 
-  // 04: Remaining CRUD functions
   saveLesson(lesson: Lesson) {
     if (lesson.id) {
       this.updateLesson(lesson);
@@ -46,14 +54,14 @@ export class LessonsFacade {
   }
 
   createLesson(lesson: Lesson) {
-    this.lessonsService.create(lesson).subscribe((_) => this.reset());
+    this.store.dispatch({ type: 'createLesson', lesson });
   }
 
   updateLesson(lesson: Lesson) {
-    this.lessonsService.update(lesson).subscribe((_) => this.reset());
+    this.store.dispatch({ type: 'updateLesson', lesson });
   }
 
   deleteLesson(lesson: Lesson) {
-    this.lessonsService.delete(lesson.id).subscribe((_) => this.reset());
+    this.store.dispatch({ type: 'deleteLesson', lesson });
   }
 }
