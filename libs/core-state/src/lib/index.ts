@@ -3,9 +3,7 @@ import { Course, Lesson } from '@bba/api-interfaces';
 import * as fromRouter from '@ngrx/router-store';
 import { ActionReducerMap, createSelector } from '@ngrx/store';
 import * as fromCourses from './courses/courses.reducer';
-import * as CoursesSelectors from './courses/courses.selectors';
 import * as fromLessons from './lessons/lessons.reducer';
-import * as LessonsSelectors from './lessons/lessons.selectors';
 import * as fromUsers from './users/users.reducer';
 
 import * as CoursesSelectors from './courses/courses.selectors';

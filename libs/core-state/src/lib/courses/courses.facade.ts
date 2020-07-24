@@ -5,6 +5,7 @@ import { filter } from 'rxjs/operators';
 
 import * as CoursesActions from './courses.actions';
 import * as CoursesSelectors from './courses.selectors';
+import { getCourseLessons } from '../index';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class CoursesFacade {
   loaded$ = this.store.pipe(select(CoursesSelectors.getCoursesLoaded));
   allCourses$ = this.store.pipe(select(CoursesSelectors.getAllCourses));
   selectedCourse$ = this.store.pipe(select(CoursesSelectors.getSelectedCourse));
+  courseLessons$ = this.store.pipe(select(getCourseLessons));
 
   mutations$ = this.actions$.pipe(
     filter((action: Action) =>
