@@ -33,3 +33,12 @@ export const getLessonsEntities = createSelector(
   (state: LessonsState) => selectEntities(state)
 );
 
+const emptyLesson: Lesson = { id: null, title: '', description: '', course_id: null };
+
+export const getSelectedLesson = createSelector(
+  getLessonsEntities,
+  getSelectedLessonId,
+  (entities, selectedId) => {
+    return selectedId ? entities[selectedId] : emptyLesson;
+  }
+);

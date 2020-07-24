@@ -13,23 +13,23 @@ import * as LessonsSelectors from './lessons.selectors';
   providedIn: 'root',
 })
 export class LessonsFacade {
-  private selectedLesson = new Subject<Lesson>();
-  private mutations = new Subject();
-
-  selectedLessons$ = this.selectedLesson.asObservable();
-  mutations$ = this.mutations.asObservable();
+  selectedLesson$ = this.store.pipe(select(LessonsSelectors.getSelectedLesson));
   allLessons$ = this.store.pipe(select(LessonsSelectors.getAllLessons));
 
+  mutations$ = this.actions$.pipe(
+    filter((action: Action) =>
+      action.type === LessonsActions.createLesson({} as any).type ||
+      action.type === LessonsActions.updateLesson({} as any).type ||
+      action.type === LessonsActions.deleteLesson({} as any).type
+    )
+  );
+
   constructor(
-    private store: Store<fromLessons.LessonsPartialState>
+    private store: Store<fromLessons.LessonsPartialState>,
+    private actions$: ActionsSubject
   ) {}
 
-  reset() {
-    this.mutations.next(true);
-  }
-
   selectLesson(lesson: Lesson) {
-    this.selectedLesson.next(lesson); // temporary
     this.dispatch(LessonsActions.selectLesson({ selectedId: lesson?.id }));
   }
 

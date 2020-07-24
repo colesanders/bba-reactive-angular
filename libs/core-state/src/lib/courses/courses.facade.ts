@@ -5,31 +5,32 @@ import { Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import * as fromCourses from './courses.reducer';
-
 import * as CoursesActions from './courses.actions';
 import * as CoursesSelectors from './courses.selectors';
+import { getCourseLessons } from '../index';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CoursesFacade {
-  private selectedCourse = new Subject<Course>();
-  private mutations = new Subject();
-
-  selectedCourses$ = this.selectedCourse.asObservable();
-  mutations$ = this.mutations.asObservable();
+  selectedCourse$ = this.store.pipe(select(CoursesSelectors.getSelectedCourse));
   allCourses$ = this.store.pipe(select(CoursesSelectors.getAllCourses));
+  courseLessons$ = this.store.pipe(select(getCourseLessons))
+
+  mutations$ = this.actions$.pipe(
+    filter((action: Action) =>
+      action.type === CoursesActions.createCourse({} as any).type ||
+      action.type === CoursesActions.updateCourse({} as any).type ||
+      action.type === CoursesActions.deleteCourse({} as any).type
+    )
+  );
 
   constructor(
-    private store: Store<fromCourses.CoursesPartialState>
+    private store: Store<fromCourses.CoursesPartialState>,
+    private actions$: ActionsSubject
   ) {}
 
-  reset() {
-    this.mutations.next(true);
-  }
-
   selectCourse(course: Course) {
-    this.selectedCourse.next(course); // temporary
     this.dispatch(CoursesActions.selectCourse({ selectedId: course?.id }));
   }
 

@@ -17,9 +17,9 @@ export class UsersFacade {
 
   mutations$ = this.actions$.pipe(
     filter((action: Action) =>
-    action.type === UsersActions.createUser({} as any).type ||
-    action.type === UsersActions.updateUser({} as any).type ||
-    action.type === UsersActions.deleteUser({} as any).type
+      action.type === UsersActions.createUser({} as any).type ||
+      action.type === UsersActions.updateUser({} as any).type ||
+      action.type === UsersActions.deleteUser({} as any).type
     )
   );
 

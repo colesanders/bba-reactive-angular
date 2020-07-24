@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Lesson } from '@bba/api-interfaces';
-import { LessonsService } from '@bba/core-data';
 import { LessonsFacade } from '@bba/core-state';
 
 @Component({
@@ -11,7 +10,7 @@ import { LessonsFacade } from '@bba/core-state';
 })
 export class LessonsComponent implements OnInit {
   lessons$: Observable<Lesson[]> = this.lessonsFacade.allLessons$;
-  selectedLesson$: Observable<Lesson> = this.lessonsFacade.selectedLessons$;
+  selectedLesson$: Observable<Lesson> = this.lessonsFacade.selectedLesson$;
 
   constructor(private lessonsFacade: LessonsFacade) {}
 
