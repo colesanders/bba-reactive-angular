@@ -11,7 +11,7 @@ export class UserDetailsComponent {
   originalTitle = '';
   @Input() set user(value: User) {
     if(value) this.originalTitle = value.title;
-    this.currentUser = {...value};
+    this.currentUser = Object.assign({}, value);
   };
   @Output() saved = new EventEmitter;
   @Output() cancelled = new EventEmitter;

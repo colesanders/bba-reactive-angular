@@ -34,14 +34,15 @@ export class CoursesFacade {
   }
 
   selectCourse(course: Course) {
-    this.selectedCourse.next(course);
+    this.selectedCourse.next(course); // temporary
+    this.dispatch(CoursesActions.selectCourse({ selectedId: course?.id }));
   }
 
   loadCourses() {
     this.coursesService
       .all()
       .subscribe((courses: Course[]) =>
-        this.store.dispatch({ type: 'setAllCourses', courses })
+        this.dispatch(CoursesActions.loadCourses({ courses }))
       );
   }
 
@@ -54,14 +55,18 @@ export class CoursesFacade {
   }
 
   createCourse(course: Course) {
-    this.store.dispatch({ type: 'createCourse', course });
+    this.dispatch(CoursesActions.createCourse({ course }));
   }
 
   updateCourse(course: Course) {
-    this.store.dispatch({ type: 'updateCourse', course });
+    this.dispatch(CoursesActions.updateCourse({ course }));
   }
 
   deleteCourse(course: Course) {
-    this.store.dispatch({ type: 'deleteCourse', course });
+    this.dispatch(CoursesActions.deleteCourse({ course }));
+  }
+
+  dispatch(action: Action) {
+    this.store.dispatch(action);
   }
 }

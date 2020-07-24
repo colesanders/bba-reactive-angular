@@ -37,8 +37,6 @@ const inititalLessons = [
 // HELPER: Immutable operations
 const create = (collection, obj) => [...collection, obj];
 const update = (collection, obj) => {
-  console.log('COLLECTION', collection);
-  console.log('OBJ', obj);
   return collection.map((i) => {
     return i.id === obj.id ? Object.assign({}, obj) : i;
   })
@@ -59,37 +57,33 @@ export const initialLessonsState: LessonsState = {
   lessons: inititalLessons,
 };
 
+const _lessonsReducer = createReducer(
+  initialLessonsState,
+  on(LessonsActions.selectLesson, (state, { selectedId }) => ({
+    selectedId,
+    lessons: state.lessons,
+  })),
+  on(LessonsActions.loadLessons, (state, { lessons }) => ({
+    selectedId: state.selectedId,
+    lessons,
+  })),
+  on(LessonsActions.createLesson, (state, { lesson }) => ({
+    selectedId: state.selectedId,
+    lessons: create(state.lessons, lesson),
+  })),
+  on(LessonsActions.updateLesson, (state, { lesson }) => ({
+    selectedId: state.selectedId,
+    lessons: update(state.lessons, lesson),
+  })),
+  on(LessonsActions.deleteLesson, (state, { lesson }) => ({
+    selectedId: state.selectedId,
+    lessons: remove(state.lessons, lesson),
+  }))
+);
+
 export function lessonsReducer(
   state: LessonsState = initialLessonsState,
   action: Action
 ) {
-  switch (action.type) {
-    case 'selectLesson':
-      return {
-        selectedId: action['selectedId'],
-        lessons: state.lessons,
-      };
-    case 'setAllLessons':
-      return {
-        selectedId: state.selectedId,
-        lessons: action['lessons']
-      };
-    case 'createLesson':
-      return {
-        selectedId: state.selectedId,
-        lessons: create(state.lessons, action['lesson']),
-      };
-    case 'updateLesson':
-      return {
-        selectedId: state.selectedId,
-        lessons: update(state.lessons, action['lesson']),
-      };
-    case 'removeLesson':
-      return {
-        selectedId: state.selectedId,
-        lessons: remove(state.lessons, action['lesson']),
-      };
-    default:
-      return state;
-  }
+  return _lessonsReducer(state, action);
 }

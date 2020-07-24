@@ -34,14 +34,15 @@ export class LessonsFacade {
   }
 
   selectLesson(lesson: Lesson) {
-    this.selectedLesson.next(lesson);
+    this.selectedLesson.next(lesson); // temporary
+    this.dispatch(LessonsActions.selectLesson({ selectedId: lesson?.id }));
   }
 
   loadLessons() {
     this.lessonsService
       .all()
       .subscribe((lessons: Lesson[]) =>
-        this.store.dispatch({ type: 'setAllLessons', lessons })
+        this.dispatch(LessonsActions.loadLessons({ lessons }))
       );
   }
 
@@ -54,14 +55,18 @@ export class LessonsFacade {
   }
 
   createLesson(lesson: Lesson) {
-    this.store.dispatch({ type: 'createLesson', lesson });
+    this.dispatch(LessonsActions.createLesson({ lesson }));
   }
 
   updateLesson(lesson: Lesson) {
-    this.store.dispatch({ type: 'updateLesson', lesson });
+    this.dispatch(LessonsActions.updateLesson({ lesson }));
   }
 
   deleteLesson(lesson: Lesson) {
-    this.store.dispatch({ type: 'deleteLesson', lesson });
+    this.dispatch(LessonsActions.deleteLesson({ lesson }));
+  }
+
+  dispatch(action: Action) {
+    this.store.dispatch(action);
   }
 }

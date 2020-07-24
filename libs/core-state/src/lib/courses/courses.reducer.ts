@@ -42,37 +42,33 @@ export const initialCoursesState: CoursesState = {
   courses: inititalCourses,
 };
 
+const _coursesReducer = createReducer(
+  initialCoursesState,
+  on(CoursesActions.selectCourse, (state, { selectedId }) => ({
+    selectedId,
+    courses: state.courses,
+  })),
+  on(CoursesActions.loadCourses, (state, { courses }) => ({
+    selectedId: state.selectedId,
+    courses,
+  })),
+  on(CoursesActions.createCourse, (state, { course }) => ({
+    selectedId: state.selectedId,
+    courses: create(state.courses, course),
+  })),
+  on(CoursesActions.updateCourse, (state, { course }) => ({
+    selectedId: state.selectedId,
+    courses: update(state.courses, course),
+  })),
+  on(CoursesActions.deleteCourse, (state, { course }) => ({
+    selectedId: state.selectedId,
+    courses: remove(state.courses, course),
+  }))
+);
+
 export function coursesReducer(
   state: CoursesState = initialCoursesState,
   action: Action
 ) {
-  switch (action.type) {
-    case 'selectCourse':
-      return {
-        selectedId: action['selectedId'],
-        courses: state.courses,
-      };
-    case 'setAllCourses':
-      return {
-        selectedId: state.selectedId,
-        courses: action['courses']
-      };
-    case 'createCourse':
-      return {
-        selectedId: state.selectedId,
-        courses: create(state.courses, action['course']),
-      };
-    case 'updateCourse':
-      return {
-        selectedId: state.selectedId,
-        courses: update(state.courses, action['course']),
-      };
-    case 'removeCourse':
-      return {
-        selectedId: state.selectedId,
-        courses: remove(state.courses, action['course']),
-      };
-    default:
-      return state;
-  }
+  return _coursesReducer(state, action);
 }
