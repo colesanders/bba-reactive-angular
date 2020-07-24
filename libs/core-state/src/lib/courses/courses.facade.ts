@@ -19,11 +19,7 @@ export class CoursesFacade {
 
   selectedCourses$ = this.selectedCourse.asObservable();
   mutations$ = this.mutations.asObservable();
-  allCourses$ = this.store.pipe(
-    select('courses'),
-    map((state) => state.entities),
-    map(state => Object.keys(state).map(k => state[k]))
-  );
+  allCourses$ = this.store.pipe(select(CoursesSelectors.getAllCourses));
 
   constructor(
     private coursesService: CoursesService,
