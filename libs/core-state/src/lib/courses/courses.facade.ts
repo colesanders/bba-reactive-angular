@@ -18,9 +18,9 @@ export class CoursesFacade {
 
   mutations$ = this.actions$.pipe(
     filter((action: Action) =>
-    action.type === CoursesActions.createCourse({} as any).type ||
-    action.type === CoursesActions.updateCourse({} as any).type ||
-    action.type === CoursesActions.deleteCourse({} as any).type
+      action.type === CoursesActions.createCourse({} as any).type ||
+      action.type === CoursesActions.updateCourse({} as any).type ||
+      action.type === CoursesActions.deleteCourse({} as any).type
     )
   );
 
