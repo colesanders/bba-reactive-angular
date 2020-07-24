@@ -6,83 +6,33 @@ import * as LessonsActions from './lessons.actions';
 
 export const LESSONS_FEATURE_KEY = 'lessons';
 
-// HELPER: Initial state
-const inititalLessons = [
-  {
-    id: '1',
-    title: 'Angular Lesson',
-    description: 'This is an Angular Lesson',
-    course_id: '1',
-  },
-  {
-    id: '2',
-    title: 'Another Angular Lesson',
-    description: 'This is another Angular Lesson',
-    course_id: '1',
-  },
-  {
-    id: '3',
-    title: 'React Lesson',
-    description: 'This is a React Lesson',
-    course_id: '2',
-  },
-  {
-    id: '4',
-    title: 'Another React Lesson',
-    description: 'This is another React Lesson',
-    course_id: '2',
-  },
-];
-
-// HELPER: Immutable operations
-const create = (collection, obj) => [...collection, obj];
-const update = (collection, obj) => {
-  return collection.map((i) => {
-    return i.id === obj.id ? Object.assign({}, obj) : i;
-  })
-};
-const remove = (collection, obj) => collection.filter((i) => i.id === obj.id);
-
 export interface LessonsPartialState {
   readonly [LESSONS_FEATURE_KEY]: LessonsState;
 }
 
-export interface LessonsState {
-  selectedId: string | null;
-  lessons: Lesson[];
+export interface LessonsState extends EntityState<Lesson> {
+  selectedId?: string;
+  loading: boolean;
+  error?: string | null
 }
 
-export const initialLessonsState: LessonsState = {
-  selectedId: null,
-  lessons: inititalLessons,
-};
+export const lessonsAdapter: EntityAdapter<Lesson> = createEntityAdapter();
+
+export const initialLessonsState: LessonsState = lessonsAdapter.getInitialState({
+  loading: false
+});
 
 const _lessonsReducer = createReducer(
   initialLessonsState,
-  on(LessonsActions.selectLesson, (state, { selectedId }) => ({
-    selectedId,
-    lessons: state.lessons,
-  })),
-  on(LessonsActions.loadLessons, (state, { lessons }) => ({
-    selectedId: state.selectedId,
-    lessons,
-  })),
-  on(LessonsActions.createLesson, (state, { lesson }) => ({
-    selectedId: state.selectedId,
-    lessons: create(state.lessons, lesson),
-  })),
-  on(LessonsActions.updateLesson, (state, { lesson }) => ({
-    selectedId: state.selectedId,
-    lessons: update(state.lessons, lesson),
-  })),
-  on(LessonsActions.deleteLesson, (state, { lesson }) => ({
-    selectedId: state.selectedId,
-    lessons: remove(state.lessons, lesson),
-  }))
+  on(LessonsActions.selectLesson, (state, { selectedId }) => Object.assign({}, state, { selectedId })),
+  on(LessonsActions.loadLessons,  (state, { lessons }) => lessonsAdapter.setAll(lessons, { ...state, loaded: true })),
+  on(LessonsActions.createLesson, (state, { lesson }) => lessonsAdapter.addOne(lesson, state)),
+  on(LessonsActions.updateLesson, (state, { lesson }) => lessonsAdapter.updateOne({ id: lesson.id, changes: lesson}, state)),
+  on(LessonsActions.deleteLesson, (state, { lesson }) => lessonsAdapter.removeOne(lesson.id, state)),
 );
 
 export function lessonsReducer(
-  state: LessonsState = initialLessonsState,
+  state: LessonsState,
   action: Action
 ) {
   return _lessonsReducer(state, action);

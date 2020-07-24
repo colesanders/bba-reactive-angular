@@ -21,7 +21,8 @@ export class CoursesFacade {
   mutations$ = this.mutations.asObservable();
   allCourses$ = this.store.pipe(
     select('courses'),
-    map((state) => state.courses)
+    map((state) => state.entities),
+    map(state => Object.keys(state).map(k => state[k]))
   );
 
   constructor(
