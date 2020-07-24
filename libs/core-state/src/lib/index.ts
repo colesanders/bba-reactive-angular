@@ -1,9 +1,13 @@
 import { Params } from '@angular/router';
+import { Course, Lesson } from '@bba/api-interfaces';
 import * as fromRouter from '@ngrx/router-store';
-import { ActionReducerMap } from '@ngrx/store';
+import { ActionReducerMap, createSelector } from '@ngrx/store';
 import * as fromCourses from './courses/courses.reducer';
 import * as fromLessons from './lessons/lessons.reducer';
 import * as fromUsers from './users/users.reducer';
+
+import * as CoursesSelectors from './courses/courses.selectors';
+import * as LessonsSelectors from './lessons/lessons.selectors';
 
 export interface RouterStateUrl {
   url: string;
@@ -28,3 +32,17 @@ export const reducers: ActionReducerMap<AppState> = {
   [fromLessons.LESSONS_FEATURE_KEY]: fromLessons.lessonsReducer,
   [fromUsers.USERS_FEATURE_KEY]: fromUsers.usersReducer,
 };
+
+// -------------------------------------------------------------------
+// Common Selectors
+// -------------------------------------------------------------------
+export const getCourseLessons = createSelector(
+  CoursesSelectors.getAllCourses,
+  LessonsSelectors.getAllLessons,
+  (courses: Course[], lessons: Lesson[]) => {
+    return courses.map((course) => ({
+      ...course,
+      lessons: lessons.filter((lesson) => lesson.course_id === course.id),
+    }));
+  }
+);
