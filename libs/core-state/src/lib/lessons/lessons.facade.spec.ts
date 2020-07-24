@@ -7,7 +7,7 @@ import { StoreModule, Store } from '@ngrx/store';
 
 import { NxModule } from '@nrwl/angular';
 
-describe('CoursesFacade', () => {
+describe('LessonssFacade', () => {
 
   beforeEach(() => {});
 
