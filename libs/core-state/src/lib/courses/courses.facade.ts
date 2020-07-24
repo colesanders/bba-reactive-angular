@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Course } from '@bba/api-interfaces';
-import { CoursesService } from '@bba/core-data';
 import { Action, ActionsSubject, select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -22,7 +21,6 @@ export class CoursesFacade {
   allCourses$ = this.store.pipe(select(CoursesSelectors.getAllCourses));
 
   constructor(
-    private coursesService: CoursesService,
     private store: Store<fromCourses.CoursesPartialState>
   ) {}
 
@@ -36,11 +34,7 @@ export class CoursesFacade {
   }
 
   loadCourses() {
-    this.coursesService
-      .all()
-      .subscribe((courses: Course[]) =>
-        this.dispatch(CoursesActions.loadCourses({ courses }))
-      );
+    this.dispatch(CoursesActions.loadCourses())
   }
 
   saveCourse(course: Course) {
