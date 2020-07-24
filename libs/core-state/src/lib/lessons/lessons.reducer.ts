@@ -12,14 +12,14 @@ export interface LessonsPartialState {
 
 export interface LessonsState extends EntityState<Lesson> {
   selectedId?: string;
-  loading: boolean;
+  loaded: boolean;
   error?: string | null
 }
 
 export const lessonsAdapter: EntityAdapter<Lesson> = createEntityAdapter();
 
 export const initialLessonsState: LessonsState = lessonsAdapter.getInitialState({
-  loading: false
+  loaded: false
 });
 
 const _lessonsReducer = createReducer(
