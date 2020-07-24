@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Course, Lesson, User } from '@bba/api-interfaces';
-import { CoursesFacade, LessonsFacade, UsersFacade } from '@bba/core-state';
-import { Observable } from 'rxjs';
+import { CoursesFacade, LessonsFacade } from '@bba/core-state';
 
 @Component({
   selector: 'bba-home',
@@ -9,19 +7,15 @@ import { Observable } from 'rxjs';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  courses$: Observable<Course[]> = this.coursesFacade.allCourses$;
-  lessons$: Observable<Lesson[]> = this.lessonsFacade.allLessons$;
-  users$: Observable<User[]> = this.usersFacade.allUsers$;
+  courseLesons$ = this.coursesFacade.courseLessons$;
 
   constructor(
     private coursesFacade: CoursesFacade,
-    private lessonsFacade: LessonsFacade,
-    private usersFacade: UsersFacade
+    private lessonsFacade: LessonsFacade
   ) {}
 
   ngOnInit(): void {
     this.coursesFacade.loadCourses();
     this.lessonsFacade.loadLessons();
-    this.usersFacade.loadUsers();
   }
 }

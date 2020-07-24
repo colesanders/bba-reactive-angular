@@ -8,6 +8,9 @@ import * as fromLessons from './lessons/lessons.reducer';
 import * as LessonsSelectors from './lessons/lessons.selectors';
 import * as fromUsers from './users/users.reducer';
 
+import * as CoursesSelectors from './courses/courses.selectors';
+import * as LessonsSelectors from './lessons/lessons.selectors';
+
 export interface RouterStateUrl {
   url: string;
   queryParams: Params;
@@ -32,10 +35,9 @@ export const reducers: ActionReducerMap<AppState> = {
   [fromUsers.USERS_FEATURE_KEY]: fromUsers.usersReducer,
 };
 
-// ---------------------------------------
-// Custom Selectors
-// ---------------------------------------
-
+// -------------------------------------------------------------------
+// Common Selectors
+// -------------------------------------------------------------------
 export const getCourseLessons = createSelector(
   CoursesSelectors.getAllCourses,
   LessonsSelectors.getAllLessons,
