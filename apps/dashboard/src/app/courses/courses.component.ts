@@ -6,18 +6,16 @@ import { CoursesService } from '@bba/core-data';
 @Component({
   selector: 'bba-courses',
   templateUrl: './courses.component.html',
-  styleUrls: ['./courses.component.scss']
+  styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit {
-  courses$: Observable<Course[]>;
+  allCourses$: Observable<Course[]>;
   selectedCourse: Course;
 
-  constructor(
-    private coursesService: CoursesService
-  ) { }
+  constructor(private coursesService: CoursesService) {}
 
   ngOnInit(): void {
-    this.loadCourses();
+    this.reset();
   }
 
   reset() {
@@ -29,7 +27,9 @@ export class CoursesComponent implements OnInit {
     this.selectedCourse = course;
   }
 
-  loadCourses() { this.courses$ = this.coursesService.all();}
+  loadCourses() {
+    this.allCourses$ = this.coursesService.all();
+  }
 
   saveCourse(course: Course) {
     if (course.id) {
@@ -40,17 +40,14 @@ export class CoursesComponent implements OnInit {
   }
 
   createCourse(course: Course) {
-    this.coursesService.create(course)
-      .subscribe(_ => this.reset());
+    this.coursesService.create(course).subscribe((_) => this.reset());
   }
 
   updateCourse(course: Course) {
-    this.coursesService.update(course)
-      .subscribe(_ => this.reset());
+    this.coursesService.update(course).subscribe((_) => this.reset());
   }
 
   deleteCourse(course: Course) {
-    this.coursesService.delete(course.id)
-      .subscribe(_ => this.reset());
+    this.coursesService.delete(course.id).subscribe((_) => this.reset());
   }
 }

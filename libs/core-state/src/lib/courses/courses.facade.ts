@@ -10,5 +10,6 @@ import * as CoursesSelectors from './courses.selectors';
   providedIn: 'root'
 })
 export class CoursesFacade {
-
+  constructor() { }
 }
+
