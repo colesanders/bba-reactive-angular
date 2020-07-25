@@ -12,19 +12,16 @@ import * as CoursesSelectors from './courses.selectors';
   providedIn: 'root',
 })
 export class CoursesFacade {
-  // 00: Create your subjects
   private allCourses = new Subject<Course[]>();
   private selectedCourse = new Subject<Course>();
   private mutations = new Subject();
-  // 01: Expose as observables
+
   allCourses$ = this.allCourses.asObservable();
-  selectedCourses$ = this.selectedCourse.asObservable();
+  selectedCourse$ = this.selectedCourse.asObservable();
   mutations$ = this.mutations.asObservable();
 
-  // 02: Inject service
   constructor(private coursesService: CoursesService) {}
 
-  // 03: Subject.next functions
   reset() {
     this.mutations.next(true);
   }
@@ -39,7 +36,6 @@ export class CoursesFacade {
       .subscribe((courses: Course[]) => this.allCourses.next(courses));
   }
 
-  // 04: Remaining CRUD functions
   saveCourse(course: Course) {
     if (course.id) {
       this.updateCourse(course);
