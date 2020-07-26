@@ -45,14 +45,6 @@ export class CoursesFacade {
       );
   }
 
-  saveCourse(course: Course) {
-    if (course.id) {
-      this.updateCourse(course);
-    } else {
-      this.createCourse(course);
-    }
-  }
-
   createCourse(course: Course) {
     this.store.dispatch({ type: 'createCourse', course });
   }

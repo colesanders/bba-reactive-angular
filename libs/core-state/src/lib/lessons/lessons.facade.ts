@@ -45,14 +45,6 @@ export class LessonsFacade {
       );
   }
 
-  saveLesson(lesson: Lesson) {
-    if (lesson.id) {
-      this.updateLesson(lesson);
-    } else {
-      this.createLesson(lesson);
-    }
-  }
-
   createLesson(lesson: Lesson) {
     this.store.dispatch({ type: 'createLesson', lesson });
   }
