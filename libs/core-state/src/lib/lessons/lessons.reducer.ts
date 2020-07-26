@@ -10,25 +10,25 @@ export const LESSONS_FEATURE_KEY = 'lessons';
 const inititalLessons = [
   {
     id: '1',
-    title: 'Angular Lesson',
+    title: 'Mock Angular Lesson',
     description: 'This is an Angular Lesson',
     course_id: '1',
   },
   {
     id: '2',
-    title: 'Another Angular Lesson',
+    title: 'Another Mock Angular Lesson',
     description: 'This is another Angular Lesson',
     course_id: '1',
   },
   {
     id: '3',
-    title: 'React Lesson',
+    title: 'Mock React Lesson',
     description: 'This is a React Lesson',
     course_id: '2',
   },
   {
     id: '4',
-    title: 'Another React Lesson',
+    title: 'Another Mock React Lesson',
     description: 'This is another React Lesson',
     course_id: '2',
   },

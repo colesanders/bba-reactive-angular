@@ -10,12 +10,12 @@ export const COURSES_FEATURE_KEY = 'courses';
 const inititalCourses = [
   {
     id: '1',
-    title: 'Angular Course',
+    title: 'Mock Angular Course',
     description: 'This is an Angular Course',
   },
   {
     id: '2',
-    title: 'Another Angular Course',
+    title: 'Another Mock Angular Course',
     description: 'This is another Angular Course',
   },
 ];
