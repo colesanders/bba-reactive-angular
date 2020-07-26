@@ -10,7 +10,7 @@ import { LessonsFacade } from '@bba/core-state';
   styleUrls: ['./lessons.component.scss'],
 })
 export class LessonsComponent implements OnInit {
-  lessons$: Observable<Lesson[]> = this.lessonsFacade.allLessons$;
+  allLessons$: Observable<Lesson[]> = this.lessonsFacade.allLessons$;
   selectedLesson$: Observable<Lesson> = this.lessonsFacade.selectedLessons$;
 
   constructor(private lessonsFacade: LessonsFacade) {}
@@ -35,9 +35,9 @@ export class LessonsComponent implements OnInit {
 
   saveLesson(lesson: Lesson) {
     if (lesson.id) {
-      this.lessonsFacade.saveLesson(lesson);
+      this.updateLesson(lesson);
     } else {
-      this.lessonsFacade.createLesson(lesson);
+      this.createLesson(lesson);
     }
   }
 

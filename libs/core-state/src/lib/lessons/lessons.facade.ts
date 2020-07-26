@@ -36,15 +36,6 @@ export class LessonsFacade {
       .subscribe((lessons: Lesson[]) => this.allLessons.next(lessons));
   }
 
-  // 04: Remaining CRUD functions
-  saveLesson(lesson: Lesson) {
-    if (lesson.id) {
-      this.updateLesson(lesson);
-    } else {
-      this.createLesson(lesson);
-    }
-  }
-
   createLesson(lesson: Lesson) {
     this.lessonsService.create(lesson).subscribe((_) => this.reset());
   }
