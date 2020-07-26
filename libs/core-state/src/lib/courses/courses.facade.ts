@@ -48,14 +48,6 @@ export class CoursesFacade {
       .subscribe((courses: Course[]) => this.allCourses.next(courses));
   }
 
-  saveCourse(course: Course) {
-    if (course.id) {
-      this.updateCourse(course);
-    } else {
-      this.createCourse(course);
-    }
-  }
-
   createCourse(course: Course) {
     this.coursesService.create(course).subscribe((_) => this.reset());
   }
