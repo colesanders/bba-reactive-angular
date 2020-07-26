@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Course } from '@bba/api-interfaces';
 import { CoursesFacade } from '@bba/core-state';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'bba-courses',
@@ -9,7 +9,7 @@ import { CoursesFacade } from '@bba/core-state';
   styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit {
-  courses$: Observable<Course[]> = this.coursesFacade.allCourses$;
+  allCourses$: Observable<Course[]> = this.coursesFacade.allCourses$;
   selectedCourse$: Observable<Course> = this.coursesFacade.selectedCourse$;
 
   constructor(private coursesFacade: CoursesFacade) {}
