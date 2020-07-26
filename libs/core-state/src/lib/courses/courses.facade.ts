@@ -15,20 +15,24 @@ import * as CoursesSelectors from './courses.selectors';
 })
 export class CoursesFacade {
   private selectedCourse = new Subject<Course>();
-  private mutations = new Subject();
 
   selectedCourses$ = this.selectedCourse.asObservable();
-  mutations$ = this.mutations.asObservable();
+
+  mutations$ = this.actions$.pipe(
+    filter((action: Action) =>
+      action.type === CoursesActions.createCourse({} as any).type ||
+      action.type === CoursesActions.updateCourse({} as any).type ||
+      action.type === CoursesActions.deleteCourse({} as any).type
+    )
+  );
+
   allCourses$ = this.store.pipe(select(CoursesSelectors.getAllCourses));
 
   constructor(
     private coursesService: CoursesService,
-    private store: Store<fromCourses.CoursesPartialState>
+    private store: Store<fromCourses.CoursesPartialState>,
+    private actions$: ActionsSubject
   ) {}
-
-  reset() {
-    this.mutations.next(true);
-  }
 
   selectCourse(course: Course) {
     this.selectedCourse.next(course); // temporary
@@ -41,14 +45,6 @@ export class CoursesFacade {
       .subscribe((courses: Course[]) =>
         this.dispatch(CoursesActions.loadCourses({ courses }))
       );
-  }
-
-  saveCourse(course: Course) {
-    if (course.id) {
-      this.updateCourse(course);
-    } else {
-      this.createCourse(course);
-    }
   }
 
   createCourse(course: Course) {
