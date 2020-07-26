@@ -5,7 +5,6 @@ import { Action, ActionsSubject, select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
-// 00: Import from reducer
 import * as fromCourses from './courses.reducer';
 
 import * as CoursesActions from './courses.actions';
@@ -22,13 +21,11 @@ export class CoursesFacade {
   selectedCourses$ = this.selectedCourse.asObservable();
   mutations$ = this.mutations.asObservable();
 
-  // 02: Update query
   allCourses$ = this.store.pipe(
     select('courses'),
     map(state => state.courses)
   );
 
-  // 01: Inject the store
   constructor(
     private coursesService: CoursesService,
     private store: Store<fromCourses.CoursesPartialState>

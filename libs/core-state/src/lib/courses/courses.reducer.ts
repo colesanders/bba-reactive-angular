@@ -38,13 +38,11 @@ export interface CoursesState {
   courses: Course[];
 }
 
-// 01: Define initial state
 export const initialCoursesState: CoursesState = {
   selectedId: null,
   courses: inititalCourses,
 };
 
-// 02: Create simple reducer
 export function coursesReducer(
   state: CoursesState = initialCoursesState,
   action: Action
