@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Lesson } from '@bba/api-interfaces';
 import { Action, ActionsSubject, select, Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-
-import * as fromLessons from './lessons.reducer';
-
+import { filter } from 'rxjs/operators';
 import * as LessonsActions from './lessons.actions';
+import * as fromLessons from './lessons.reducer';
 import * as LessonsSelectors from './lessons.selectors';
 
 @Injectable({
@@ -35,14 +32,6 @@ export class LessonsFacade {
 
   loadLessons() {
     this.dispatch(LessonsActions.loadLessons());
-  }
-
-  saveLesson(lesson: Lesson) {
-    if (lesson.id) {
-      this.updateLesson(lesson);
-    } else {
-      this.createLesson(lesson);
-    }
   }
 
   createLesson(lesson: Lesson) {

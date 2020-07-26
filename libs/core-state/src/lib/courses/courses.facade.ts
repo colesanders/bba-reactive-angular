@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Course } from '@bba/api-interfaces';
 import { Action, ActionsSubject, select, Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-
-import * as fromCourses from './courses.reducer';
-import * as CoursesActions from './courses.actions';
-import * as CoursesSelectors from './courses.selectors';
+import { filter } from 'rxjs/operators';
 import { getCourseLessons } from '../index';
+import * as CoursesActions from './courses.actions';
+import * as fromCourses from './courses.reducer';
+import * as CoursesSelectors from './courses.selectors';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +13,7 @@ import { getCourseLessons } from '../index';
 export class CoursesFacade {
   selectedCourse$ = this.store.pipe(select(CoursesSelectors.getSelectedCourse));
   allCourses$ = this.store.pipe(select(CoursesSelectors.getAllCourses));
-  courseLessons$ = this.store.pipe(select(getCourseLessons))
+  courseLessons$ = this.store.pipe(select(getCourseLessons));
 
   mutations$ = this.actions$.pipe(
     filter((action: Action) =>
@@ -36,14 +34,6 @@ export class CoursesFacade {
 
   loadCourses() {
     this.dispatch(CoursesActions.loadCourses())
-  }
-
-  saveCourse(course: Course) {
-    if (course.id) {
-      this.updateCourse(course);
-    } else {
-      this.createCourse(course);
-    }
   }
 
   createCourse(course: Course) {

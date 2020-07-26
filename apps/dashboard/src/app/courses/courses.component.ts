@@ -34,9 +34,9 @@ export class CoursesComponent implements OnInit {
 
   saveCourse(course: Course) {
     if (course.id) {
-      this.coursesFacade.saveCourse(course);
+      this.updateCourse(course);
     } else {
-      this.coursesFacade.createCourse(course);
+      this.createCourse(course);
     }
   }
 
