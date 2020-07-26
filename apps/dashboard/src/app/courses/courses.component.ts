@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Course } from '@bba/api-interfaces';
-import { CoursesService } from '@bba/core-data';
 import { CoursesFacade } from '@bba/core-state';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'bba-courses',
@@ -10,15 +9,12 @@ import { CoursesFacade } from '@bba/core-state';
   styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit {
-  // 01: Queries
-  courses$: Observable<Course[]> = this.coursesFacade.allCourses$;
+  allCourses$: Observable<Course[]> = this.coursesFacade.allCourses$;
   selectedCourse$: Observable<Course> = this.coursesFacade.selectedCourses$;
 
-  // 00: Update service
   constructor(private coursesFacade: CoursesFacade) {}
 
   ngOnInit(): void {
-    // 04: cleanup
     this.reset();
     this.coursesFacade.mutations$.subscribe((_) => this.reset())
   }
@@ -28,7 +24,6 @@ export class CoursesComponent implements OnInit {
     this.selectCourse(null);
   }
 
-  // 02: Commands
   selectCourse(course: Course) {
     this.coursesFacade.selectCourse(course);
   }
