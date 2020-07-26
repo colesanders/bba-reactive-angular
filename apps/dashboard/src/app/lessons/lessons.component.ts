@@ -35,9 +35,9 @@ export class LessonsComponent implements OnInit {
 
   saveLesson(lesson: Lesson) {
     if (lesson.id) {
-      this.lessonsFacade.saveLesson(lesson);
+      this.updateLesson(lesson);
     } else {
-      this.lessonsFacade.createLesson(lesson);
+      this.createLesson(lesson);
     }
   }
 
