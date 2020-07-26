@@ -15,23 +15,26 @@ import * as LessonsSelectors from './lessons.selectors';
 })
 export class LessonsFacade {
   private selectedLesson = new Subject<Lesson>();
-  private mutations = new Subject();
 
   selectedLessons$ = this.selectedLesson.asObservable();
-  mutations$ = this.mutations.asObservable();
   allLessons$ = this.store.pipe(
     select('lessons'),
     map((state) => state.lessons)
   );
 
+  mutations$ = this.actions$.pipe(
+    filter((action: Action) =>
+      action.type === LessonsActions.createLesson({} as any).type ||
+      action.type === LessonsActions.updateLesson({} as any).type ||
+      action.type === LessonsActions.deleteLesson({} as any).type
+    )
+  );
+
   constructor(
     private lessonsService: LessonsService,
-    private store: Store<fromLessons.LessonsPartialState>
+    private store: Store<fromLessons.LessonsPartialState>,
+    private actions$: ActionsSubject
   ) {}
-
-  reset() {
-    this.mutations.next(true);
-  }
 
   selectLesson(lesson: Lesson) {
     this.selectedLesson.next(lesson); // temporary
@@ -44,14 +47,6 @@ export class LessonsFacade {
       .subscribe((lessons: Lesson[]) =>
         this.dispatch(LessonsActions.loadLessons({ lessons }))
       );
-  }
-
-  saveLesson(lesson: Lesson) {
-    if (lesson.id) {
-      this.updateLesson(lesson);
-    } else {
-      this.createLesson(lesson);
-    }
   }
 
   createLesson(lesson: Lesson) {

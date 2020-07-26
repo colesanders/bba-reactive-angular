@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Lesson } from '@bba/api-interfaces';
-import { LessonsService } from '@bba/core-data';
 import { LessonsFacade } from '@bba/core-state';
 
 @Component({
@@ -35,9 +34,9 @@ export class LessonsComponent implements OnInit {
 
   saveLesson(lesson: Lesson) {
     if (lesson.id) {
-      this.lessonsFacade.saveLesson(lesson);
+      this.updateLesson(lesson);
     } else {
-      this.lessonsFacade.createLesson(lesson);
+      this.createLesson(lesson);
     }
   }
 
