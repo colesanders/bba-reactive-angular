@@ -5,3 +5,12 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { fetch, pessimisticUpdate } from '@nrwl/angular';
 import { map } from 'rxjs/operators';
 import * as LessonsActions from './lessons.actions';
+
+@Injectable()
+export class LessonsEffects {
+
+  constructor(
+    private actions$: Actions,
+    private coursesService: LessonsService
+  ) {}
+}

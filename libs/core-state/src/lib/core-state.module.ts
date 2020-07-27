@@ -6,6 +6,7 @@ import { RootStoreConfig, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers } from '.';
 import { CoursesEffects } from './courses/courses.effects';
+import { LessonsEffects } from './lessons/lessons.effects';
 import { UsersEffects } from './users/users.effects';
 
 const STORE_NAME = 'bba-store';
@@ -22,7 +23,7 @@ const storeConfig: RootStoreConfig<any, any> = {
   imports: [
     CommonModule,
     StoreModule.forRoot(reducers, storeConfig),
-    EffectsModule.forRoot([CoursesEffects, UsersEffects]),
+    EffectsModule.forRoot([CoursesEffects, LessonsEffects, UsersEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, name: STORE_NAME }),
     StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
   ],
