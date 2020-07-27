@@ -6,7 +6,7 @@ export const getCoursesState = createFeatureSelector<
   CoursesState
 >(COURSES_FEATURE_KEY);
 
-const { selectAll } = coursesAdapter.getSelectors();
+const { selectAll, selectEntities } = coursesAdapter.getSelectors();
 
 export const getSelectedCourseId = createSelector(
   getCoursesState,
@@ -26,4 +26,19 @@ export const getCoursesError = createSelector(
 export const getAllCourses = createSelector(
   getCoursesState,
   (state: CoursesState) => selectAll(state)
+);
+
+export const getCoursesEntities = createSelector(
+  getCoursesState,
+  (state: CoursesState) => selectEntities(state)
+);
+
+const emptyCourse: Course = { id: null, title: '', description: '' };
+
+export const getSelectedCourse = createSelector(
+  getCoursesEntities,
+  getSelectedCourseId,
+  (entities, selectedId) => {
+    return selectedId ? entities[selectedId] : emptyCourse;
+  }
 );
