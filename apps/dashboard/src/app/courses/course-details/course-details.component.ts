@@ -11,7 +11,7 @@ export class CourseDetailsComponent {
   originalTitle = '';
   @Input() set course(value: Course) {
     if(value) this.originalTitle = value.title;
-    this.currentCourse = {...value};
+    this.currentCourse = Object.assign({}, value);
   };
   @Output() saved = new EventEmitter;
   @Output() cancelled = new EventEmitter;

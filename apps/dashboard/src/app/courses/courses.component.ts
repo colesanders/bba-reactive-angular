@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Course } from '@bba/api-interfaces';
 import { CoursesFacade } from '@bba/core-state';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'bba-courses',
@@ -16,7 +16,7 @@ export class CoursesComponent implements OnInit {
 
   ngOnInit(): void {
     this.reset();
-    this.coursesFacade.mutations$.subscribe((_) => this.reset())
+    this.coursesFacade.mutations$.subscribe((_) => this.reset());
   }
 
   reset() {
