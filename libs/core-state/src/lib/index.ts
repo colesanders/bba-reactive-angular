@@ -34,7 +34,7 @@ export const reducers: ActionReducerMap<AppState> = {
 };
 
 // -------------------------------------------------------------------
-// Common Selectors
+// Custom Selectors
 // -------------------------------------------------------------------
 export const getCourseLessons = createSelector(
   CoursesSelectors.getAllCourses,
