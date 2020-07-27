@@ -6,7 +6,7 @@ export const getLessonsState = createFeatureSelector<
   LessonsState
 >(LESSONS_FEATURE_KEY);
 
-const { selectAll, selectEntities } = lessonsAdapter.getSelectors();
+const { selectAll } = lessonsAdapter.getSelectors();
 
 export const getSelectedLessonId = createSelector(
   getLessonsState,
@@ -27,9 +27,3 @@ export const getAllLessons = createSelector(
   getLessonsState,
   (state: LessonsState) => selectAll(state)
 );
-
-export const getLessonsEntities = createSelector(
-  getLessonsState,
-  (state: LessonsState) => selectEntities(state)
-);
-

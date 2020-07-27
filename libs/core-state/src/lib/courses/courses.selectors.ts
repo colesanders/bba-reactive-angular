@@ -6,7 +6,7 @@ export const getCoursesState = createFeatureSelector<
   CoursesState
 >(COURSES_FEATURE_KEY);
 
-const { selectAll, selectEntities } = coursesAdapter.getSelectors();
+const { selectAll } = coursesAdapter.getSelectors();
 
 export const getSelectedCourseId = createSelector(
   getCoursesState,
@@ -26,9 +26,4 @@ export const getCoursesError = createSelector(
 export const getAllCourses = createSelector(
   getCoursesState,
   (state: CoursesState) => selectAll(state)
-);
-
-export const getCoursesEntities = createSelector(
-  getCoursesState,
-  (state: CoursesState) => selectEntities(state)
 );
