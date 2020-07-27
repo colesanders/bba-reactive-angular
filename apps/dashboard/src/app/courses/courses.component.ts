@@ -10,13 +10,13 @@ import { Observable } from 'rxjs';
 })
 export class CoursesComponent implements OnInit {
   allCourses$: Observable<Course[]> = this.coursesFacade.allCourses$;
-  selectedCourse$: Observable<Course> = this.coursesFacade.selectedCourses$;
+  selectedCourse$: Observable<Course> = this.coursesFacade.selectedCourse$;
 
   constructor(private coursesFacade: CoursesFacade) {}
 
   ngOnInit(): void {
     this.reset();
-    this.coursesFacade.mutations$.subscribe((_) => this.reset())
+    this.coursesFacade.mutations$.subscribe((_) => this.reset());
   }
 
   reset() {

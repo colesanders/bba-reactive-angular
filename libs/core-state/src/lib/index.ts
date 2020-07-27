@@ -1,6 +1,7 @@
 import { Params } from '@angular/router';
 import * as fromRouter from '@ngrx/router-store';
 import { ActionReducerMap } from '@ngrx/store';
+
 import * as fromCourses from './courses/courses.reducer';
 import * as fromLessons from './lessons/lessons.reducer';
 import * as fromUsers from './users/users.reducer';
