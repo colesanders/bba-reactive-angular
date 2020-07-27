@@ -29,16 +29,16 @@ const _coursesReducer = createReducer(
   on(CoursesActions.selectCourse, (state, { selectedId }) =>
     Object.assign({}, state, { selectedId })
   ),
-  on(CoursesActions.loadCourses, (state, { courses }) =>
+  on(CoursesActions.loadCoursesSuccess, (state, { courses }) =>
     coursesAdapter.setAll(courses, { ...state, loaded: true })
   ),
-  on(CoursesActions.createCourse, (state, { course }) =>
+  on(CoursesActions.createCourseSuccess, (state, { course }) =>
     coursesAdapter.addOne(course, state)
   ),
-  on(CoursesActions.updateCourse, (state, { course }) =>
+  on(CoursesActions.updateCourseSuccess, (state, { course }) =>
     coursesAdapter.updateOne({ id: course.id, changes: course }, state)
   ),
-  on(CoursesActions.deleteCourse, (state, { course }) =>
+  on(CoursesActions.deleteCourseSuccess, (state, { course }) =>
     coursesAdapter.removeOne(course.id, state)
   )
 );
