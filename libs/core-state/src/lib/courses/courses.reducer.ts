@@ -6,73 +6,46 @@ import * as CoursesActions from './courses.actions';
 
 export const COURSES_FEATURE_KEY = 'courses';
 
-// HELPER: Initial state
-const inititalCourses = [
-  {
-    id: '1',
-    title: 'Angular Course',
-    description: 'This is an Angular Course',
-  },
-  {
-    id: '2',
-    title: 'Another Angular Course',
-    description: 'This is another Angular Course',
-  },
-];
-
-// HELPER: Immutable operations
-const create = (collection, obj) => [...collection, obj];
-const update = (collection, obj) =>
-  collection.map((i) => {
-    return i.id === obj.id ? Object.assign({}, obj) : i;
-  });
-const remove = (collection, obj) => collection.filter((i) => i.id === obj.id);
-
 export interface CoursesPartialState {
   readonly [COURSES_FEATURE_KEY]: CoursesState;
 }
 
-export interface CoursesState {
-  selectedId: string | null;
-  courses: Course[];
+export interface CoursesState extends EntityState<Course> {
+  selectedId?: string;
+  loaded: boolean;
+  error?: string | null;
 }
 
-export const initialCoursesState: CoursesState = {
-  selectedId: null,
-  courses: inititalCourses,
-};
+export const coursesAdapter: EntityAdapter<Course> = createEntityAdapter();
+
+export const initialCoursesState: CoursesState = coursesAdapter.getInitialState(
+  {
+    loaded: false,
+  }
+);
+
+const _coursesReducer = createReducer(
+  initialCoursesState,
+  on(CoursesActions.selectCourse, (state, { selectedId }) =>
+    Object.assign({}, state, { selectedId })
+  ),
+  on(CoursesActions.loadCoursesSuccess, (state, { courses }) =>
+    coursesAdapter.setAll(courses, { ...state, loaded: true })
+  ),
+  on(CoursesActions.createCourseSuccess, (state, { course }) =>
+    coursesAdapter.addOne(course, state)
+  ),
+  on(CoursesActions.updateCourseSuccess, (state, { course }) =>
+    coursesAdapter.updateOne({ id: course.id, changes: course }, state)
+  ),
+  on(CoursesActions.deleteCourseSuccess, (state, { course }) =>
+    coursesAdapter.removeOne(course.id, state)
+  )
+);
 
 export function coursesReducer(
   state: CoursesState = initialCoursesState,
   action: Action
 ) {
-  switch (action.type) {
-    case 'selectCourse':
-      return {
-        selectedId: action['selectedId'],
-        courses: state.courses,
-      };
-    case 'setAllCourses':
-      return {
-        selectedId: state.selectedId,
-        courses: action['courses']
-      };
-    case 'createCourse':
-      return {
-        selectedId: state.selectedId,
-        courses: create(state.courses, action['course']),
-      };
-    case 'updateCourse':
-      return {
-        selectedId: state.selectedId,
-        courses: update(state.courses, action['course']),
-      };
-    case 'removeCourse':
-      return {
-        selectedId: state.selectedId,
-        courses: remove(state.courses, action['course']),
-      };
-    default:
-      return state;
-  }
+  return _coursesReducer(state, action);
 }
