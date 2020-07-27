@@ -13,27 +13,36 @@ export interface LessonsPartialState {
 export interface LessonsState extends EntityState<Lesson> {
   selectedId?: string;
   loaded: boolean;
-  error?: string | null
+  error?: string | null;
 }
 
 export const lessonsAdapter: EntityAdapter<Lesson> = createEntityAdapter();
 
-export const initialLessonsState: LessonsState = lessonsAdapter.getInitialState({
-  loaded: false
-});
+export const initialLessonsState: LessonsState = lessonsAdapter.getInitialState(
+  {
+    loaded: false,
+  }
+);
 
 const _lessonsReducer = createReducer(
   initialLessonsState,
-  on(LessonsActions.selectLesson, (state, { selectedId }) => Object.assign({}, state, { selectedId })),
-  on(LessonsActions.loadLessons,  (state, { lessons }) => lessonsAdapter.setAll(lessons, { ...state, loaded: true })),
-  on(LessonsActions.createLesson, (state, { lesson }) => lessonsAdapter.addOne(lesson, state)),
-  on(LessonsActions.updateLesson, (state, { lesson }) => lessonsAdapter.updateOne({ id: lesson.id, changes: lesson}, state)),
-  on(LessonsActions.deleteLesson, (state, { lesson }) => lessonsAdapter.removeOne(lesson.id, state)),
+  on(LessonsActions.selectLesson, (state, { selectedId }) =>
+    Object.assign({}, state, { selectedId })
+  ),
+  on(LessonsActions.loadLessons, (state, { lessons }) =>
+    lessonsAdapter.setAll(lessons, { ...state, loaded: true })
+  ),
+  on(LessonsActions.createLesson, (state, { lesson }) =>
+    lessonsAdapter.addOne(lesson, state)
+  ),
+  on(LessonsActions.updateLesson, (state, { lesson }) =>
+    lessonsAdapter.updateOne({ id: lesson.id, changes: lesson }, state)
+  ),
+  on(LessonsActions.deleteLesson, (state, { lesson }) =>
+    lessonsAdapter.removeOne(lesson.id, state)
+  )
 );
 
-export function lessonsReducer(
-  state: LessonsState,
-  action: Action
-) {
+export function lessonsReducer(state: LessonsState, action: Action) {
   return _lessonsReducer(state, action);
 }
