@@ -18,17 +18,29 @@ export interface CoursesState extends EntityState<Course> {
 
 export const coursesAdapter: EntityAdapter<Course> = createEntityAdapter();
 
-export const initialCoursesState: CoursesState = coursesAdapter.getInitialState({
-  loaded: false
-})
+export const initialCoursesState: CoursesState = coursesAdapter.getInitialState(
+  {
+    loaded: false,
+  }
+);
 
 const _coursesReducer = createReducer(
   initialCoursesState,
-  on(CoursesActions.selectCourse, (state, { selectedId }) => Object.assign({}, state, { selectedId })),
-  on(CoursesActions.loadCourses,  (state, { courses }) => coursesAdapter.setAll(courses, { ...state, loaded: true })),
-  on(CoursesActions.createCourse, (state, { course }) => coursesAdapter.addOne(course, state)),
-  on(CoursesActions.updateCourse, (state, { course }) => coursesAdapter.updateOne({ id: course.id, changes: course}, state)),
-  on(CoursesActions.deleteCourse, (state, { course }) => coursesAdapter.removeOne(course.id, state)),
+  on(CoursesActions.selectCourse, (state, { selectedId }) =>
+    Object.assign({}, state, { selectedId })
+  ),
+  on(CoursesActions.loadCourses, (state, { courses }) =>
+    coursesAdapter.setAll(courses, { ...state, loaded: true })
+  ),
+  on(CoursesActions.createCourse, (state, { course }) =>
+    coursesAdapter.addOne(course, state)
+  ),
+  on(CoursesActions.updateCourse, (state, { course }) =>
+    coursesAdapter.updateOne({ id: course.id, changes: course }, state)
+  ),
+  on(CoursesActions.deleteCourse, (state, { course }) =>
+    coursesAdapter.removeOne(course.id, state)
+  )
 );
 
 export function coursesReducer(
