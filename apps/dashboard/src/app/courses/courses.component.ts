@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Course } from '@bba/api-interfaces';
-import { CoursesService } from '@bba/core-data';
+import { CoursesFacade } from '@bba/core-state';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'bba-courses',
@@ -9,13 +9,14 @@ import { CoursesService } from '@bba/core-data';
   styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit {
-  allCourses$: Observable<Course[]>;
-  selectedCourse: Course;
+  allCourses$: Observable<Course[]> = this.coursesFacade.allCourses$;
+  selectedCourse$: Observable<Course> = this.coursesFacade.selectedCourse$;
 
-  constructor(private coursesService: CoursesService) {}
+  constructor(private coursesFacade: CoursesFacade) {}
 
   ngOnInit(): void {
     this.reset();
+    this.coursesFacade.mutations$.subscribe((_) => this.reset());
   }
 
   reset() {
@@ -24,11 +25,11 @@ export class CoursesComponent implements OnInit {
   }
 
   selectCourse(course: Course) {
-    this.selectedCourse = course;
+    this.coursesFacade.selectCourse(course);
   }
 
   loadCourses() {
-    this.allCourses$ = this.coursesService.all();
+    this.coursesFacade.loadCourses();
   }
 
   saveCourse(course: Course) {
@@ -40,14 +41,14 @@ export class CoursesComponent implements OnInit {
   }
 
   createCourse(course: Course) {
-    this.coursesService.create(course).subscribe((_) => this.reset());
+    this.coursesFacade.createCourse(course);
   }
 
   updateCourse(course: Course) {
-    this.coursesService.update(course).subscribe((_) => this.reset());
+    this.coursesFacade.updateCourse(course);
   }
 
   deleteCourse(course: Course) {
-    this.coursesService.delete(course.id).subscribe((_) => this.reset());
+    this.coursesFacade.deleteCourse(course);
   }
 }
