@@ -12,6 +12,7 @@
     "build": "ng build",
     "test": "ng test --code-coverage",
     "test:core-data": "ng run core-data:test --code-coverage",
+    "test:core-state": "ng run core-state:test --code-coverage",
     "lint": "nx workspace-lint && ng lint",
     "e2e": "ng e2e",
     "affected:apps": "nx affected:apps",
