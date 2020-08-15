@@ -10,7 +10,7 @@
     "server": "json-server server/db.json",
     "server:all": "concurrently \"npm run server\" \"ng serve\"",
     "build": "ng build",
-    "test": "ng test",
+    "test": "ng test --code-coverage",
     "lint": "nx workspace-lint && ng lint",
     "e2e": "ng e2e",
     "affected:apps": "nx affected:apps",
