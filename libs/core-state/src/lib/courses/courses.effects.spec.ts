@@ -74,6 +74,20 @@ describe('CoursesEffects', () => {
 
       expect(effects.loadCourse$).toBeObservable(expected);
     });
+
+    it('should not work', () => {
+      actions = hot('-a', { a: CoursesActions.loadCourse({courseId: mockCourse.id}) });
+
+      const error = new Error('mockError') as any;
+      const response = cold('-#|', {}, error)
+
+      const spy = jest.spyOn(service, 'find');
+      spy.mockReturnValue(response);
+
+      const expected = cold('--b', { b: CoursesActions.loadCourseFailure({ error }) });
+
+      expect(effects.loadCourse$).toBeObservable(expected);
+    });
   });
 
   describe('createCourse$', () => {
@@ -83,6 +97,20 @@ describe('CoursesEffects', () => {
       const expected = hot('-a-|', {
         a: CoursesActions.createCourseSuccess({ course: {...mockCourse} }),
       });
+
+      expect(effects.createCourse$).toBeObservable(expected);
+    });
+
+    it('should not work', () => {
+      actions = hot('-a', { a: CoursesActions.createCourse({ course: mockCourse }) });
+
+      const error = new Error('mockError') as any;
+      const response = cold('-#|', {}, error)
+
+      const spy = jest.spyOn(service, 'create');
+      spy.mockReturnValue(response);
+
+      const expected = cold('--b', { b: CoursesActions.createCourseFailure({ error }) });
 
       expect(effects.createCourse$).toBeObservable(expected);
     });
@@ -98,6 +126,20 @@ describe('CoursesEffects', () => {
 
       expect(effects.updateCourse$).toBeObservable(expected);
     });
+
+    it('should not work', () => {
+      actions = hot('-a', { a: CoursesActions.updateCourse({ course: mockCourse }) });
+
+      const error = new Error('mockError') as any;
+      const response = cold('-#|', {}, error)
+
+      const spy = jest.spyOn(service, 'update');
+      spy.mockReturnValue(response);
+
+      const expected = cold('--b', { b: CoursesActions.updateCourseFailure({ error }) });
+
+      expect(effects.updateCourse$).toBeObservable(expected);
+    });
   });
 
   describe('deleteCourse$', () => {
@@ -107,6 +149,20 @@ describe('CoursesEffects', () => {
       const expected = hot('-a-|', {
         a: CoursesActions.deleteCourseSuccess({ course: {...mockCourse} }),
       });
+
+      expect(effects.deleteCourse$).toBeObservable(expected);
+    });
+
+    it('should not work', () => {
+      actions = hot('-a', { a: CoursesActions.deleteCourse({ course: mockCourse }) });
+
+      const error = new Error('mockError') as any;
+      const response = cold('-#|', {}, error)
+
+      const spy = jest.spyOn(service, 'delete');
+      spy.mockReturnValue(response);
+
+      const expected = cold('--b', { b: CoursesActions.deleteCourseFailure({ error }) });
 
       expect(effects.deleteCourse$).toBeObservable(expected);
     });

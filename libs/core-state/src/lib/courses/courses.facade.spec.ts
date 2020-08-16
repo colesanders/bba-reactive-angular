@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { readFirst } from '@nrwl/angular/testing';
+import { readFirst, hot } from '@nrwl/angular/testing';
 
 import { EffectsModule } from '@ngrx/effects';
-import { StoreModule, Store, ActionsSubject } from '@ngrx/store';
+import { StoreModule, Store, ActionsSubject, createAction } from '@ngrx/store';
 
 import { NxModule } from '@nrwl/angular';
 
@@ -20,31 +20,53 @@ import {
 } from './courses.reducer';
 import { Course } from '@bba/api-interfaces';
 import { mockCourse } from '../tests.mocks';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { of } from 'rxjs';
 
 describe('CoursesFacade', () => {
   let facade: CoursesFacade;
-  let store: Store;
+  let actionSubject;
+  const mockActionsSubject = new ActionsSubject;
+  let store: MockStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({}),
-        EffectsModule.forRoot([]),
-      ],
       providers: [
         CoursesFacade,
-        Store,
-        ActionsSubject,
+        provideMockStore({ initialState: initialCoursesState }),
+        { provide: ActionsSubject, useValue: mockActionsSubject }
       ],
     });
 
     facade = TestBed.inject(CoursesFacade);
-    store = TestBed.inject(Store);
+    actionSubject = TestBed.inject(ActionsSubject)
+    store = TestBed.inject(MockStore);
   });
 
   it('should be created', () => {
     expect(facade).toBeTruthy();
   });
+
+  it('should have no mutations', () => {
+    let result;
+    facade.mutations$.subscribe((ret) => {
+      result = ret;
+    })
+
+    expect(result).toBe(undefined);
+  })
+
+  it('should have mutations', () => {
+    const action = CoursesActions.createCourse({course: mockCourse})
+    actionSubject.next(action);
+
+    let result;
+    facade.mutations$.subscribe((ret) => {
+      result = ret;
+    })
+
+    expect(result).toBe(action);
+  })
 
   describe('should dispatch', () => {
 

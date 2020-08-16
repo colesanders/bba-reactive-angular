@@ -1,27 +1,15 @@
 import { User, Lesson, Course } from '@bba/api-interfaces'
 import { of } from 'rxjs'
 
-export const mockLessonsFacade = {
-  loadLessons: () => {},
-  selectLesson: () => {},
-  deleteLesson: () => {},
-  updateLesson: () => {},
-  createLesson: () => {},
-  mutations$: of(true),
-}
+
 export const mockLessonsService = {
     all: () => of([]),
-    find: () => {},
+    find: () => of({...mockLesson}),
+    create: () => of ({...mockLesson}),
+    update: () => of({...mockLesson}),
+    delete: () => of({...mockLesson}),
 }
-  
-export const mockCoursesFacade = {
-  loadCourses: () => {},
-  selectCourse: () => {},
-  deleteCourse: () => {},
-  updateCourse: () => {},
-  createCourse: () => {},
-  mutations$: of(true),
-}
+
 export const mockCoursesService = {
     all: () => of([]),
     find: () => of({...mockCourse}),
@@ -29,18 +17,12 @@ export const mockCoursesService = {
     update: () => of({...mockCourse}),
     delete: () => of({...mockCourse}),
 }
-
-export const mockUsersFacade = {
-  loadUsers: () => {},
-  selectUser: () => {},
-  deleteUser: () => {},
-  updateUser: () => {},
-  createUser: () => {},
-  mutations$: of(true),
-}
 export const mockUsersService = {
-    all: () => of([]),
-    find: () => {},
+  all: () => of([]),
+  find: () => of({...mockUser}),
+  create: () => of ({...mockUser}),
+  update: () => of({...mockUser}),
+  delete: () => of({...mockUser}),
 }
 
 export const mockUser: User = {
