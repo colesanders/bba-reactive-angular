@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Index Common Selector should select the related courses and lessons 1`] = `
+Array [
+  Object {
+    "description": "mockCourse constant for testing",
+    "id": "0",
+    "lessons": Array [
+      Object {
+        "course_id": "0",
+        "description": "mockLesson constant for testing",
+        "id": "0",
+        "title": "mockLesson",
+      },
+      Object {
+        "course_id": "0",
+        "description": "mockLesson constant for testing",
+        "id": "1",
+        "title": "mockLesson",
+      },
+      Object {
+        "course_id": "0",
+        "description": "mockLesson constant for testing",
+        "id": "2",
+        "title": "mockLesson",
+      },
+    ],
+    "title": "mockCourse",
+  },
+  Object {
+    "description": "mockCourse constant for testing",
+    "id": "1",
+    "lessons": Array [],
+    "title": "mockCourse",
+  },
+  Object {
+    "description": "mockCourse constant for testing",
+    "id": "2",
+    "lessons": Array [],
+    "title": "mockCourse",
+  },
+]
+`;
