@@ -1,25 +1,31 @@
-import { UsersEntity } from './users.models';
 import * as UsersActions from './users.actions';
-import { State, initialState, reducer } from './users.reducer';
+import { 
+  UsersState,
+  initialUsersState, 
+  usersReducer } from './users.reducer';
+import { User } from '@bba/api-interfaces';
 
 describe('Users Reducer', () => {
-  const createUsersEntity = (id: string, name = '') =>
+  const createUser = (id: string, name = '') =>
     ({
       id,
-      name: name || `name-${id}`,
-    } as UsersEntity);
+      firstName: name || `name-${id}`,
+      lastName: '',
+      email: '',
+      password: ''
+    } as User);
 
   beforeEach(() => {});
 
   describe('valid Users actions', () => {
     it('loadUsersSuccess should return set the list of known Users', () => {
       const users = [
-        createUsersEntity('PRODUCT-AAA'),
-        createUsersEntity('PRODUCT-zzz'),
+        createUser('PRODUCT-AAA'),
+        createUser('PRODUCT-zzz'),
       ];
       const action = UsersActions.loadUsersSuccess({ users });
 
-      const result: State = reducer(initialState, action);
+      const result: UsersState = usersReducer(initialUsersState, action);
 
       expect(result.loaded).toBe(true);
       expect(result.ids.length).toBe(2);
@@ -30,9 +36,9 @@ describe('Users Reducer', () => {
     it('should return the previous state', () => {
       const action = {} as any;
 
-      const result = reducer(initialState, action);
+      const result: UsersState = usersReducer(initialUsersState, action);
 
-      expect(result).toBe(initialState);
+      expect(result).toBe(initialUsersState);
     });
   });
 });

@@ -3,11 +3,10 @@ import { TestBed } from '@angular/core/testing';
 import { readFirst } from '@nrwl/angular/testing';
 
 import { EffectsModule } from '@ngrx/effects';
-import { StoreModule, Store } from '@ngrx/store';
+import { StoreModule, Store, ActionsSubject } from '@ngrx/store';
 
 import { NxModule } from '@nrwl/angular';
 
-import { CoursesEntity } from './courses.models';
 import { CoursesEffects } from './courses.effects';
 import { CoursesFacade } from './courses.facade';
 
@@ -15,104 +14,99 @@ import * as CoursesSelectors from './courses.selectors';
 import * as CoursesActions from './courses.actions';
 import {
   COURSES_FEATURE_KEY,
-  State,
-  initialState,
-  reducer,
+  CoursesState,
+  initialCoursesState,
+  coursesReducer,
 } from './courses.reducer';
-
-interface TestSchema {
-  courses: State;
-}
+import { Course } from '@bba/api-interfaces';
+import { mockCourse } from '../tests.mocks';
 
 describe('CoursesFacade', () => {
   let facade: CoursesFacade;
-  let store: Store<TestSchema>;
-  const createCoursesEntity = (id: string, name = '') =>
-    ({
-      id,
-      name: name || `name-${id}`,
-    } as CoursesEntity);
+  let store: Store;
 
-  beforeEach(() => {});
-
-  describe('used in NgModule', () => {
-    beforeEach(() => {
-      @NgModule({
-        imports: [
-          StoreModule.forFeature(COURSES_FEATURE_KEY, reducer),
-          EffectsModule.forFeature([CoursesEffects]),
-        ],
-        providers: [CoursesFacade],
-      })
-      class CustomFeatureModule {}
-
-      @NgModule({
-        imports: [
-          NxModule.forRoot(),
-          StoreModule.forRoot({}),
-          EffectsModule.forRoot([]),
-          CustomFeatureModule,
-        ],
-      })
-      class RootModule {}
-      TestBed.configureTestingModule({ imports: [RootModule] });
-
-      store = TestBed.get(Store);
-      facade = TestBed.get(CoursesFacade);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        StoreModule.forRoot({}),
+        EffectsModule.forRoot([]),
+      ],
+      providers: [
+        CoursesFacade,
+        Store,
+        ActionsSubject,
+      ],
     });
 
-    /**
-     * The initially generated facade::loadAll() returns empty array
-     */
-    it('loadAll() should return empty list with loaded == true', async (done) => {
-      try {
-        let list = await readFirst(facade.allCourses$);
-        let isLoaded = await readFirst(facade.loaded$);
-
-        expect(list.length).toBe(0);
-        expect(isLoaded).toBe(false);
-
-        facade.dispatch(CoursesActions.loadCourses());
-
-        list = await readFirst(facade.allCourses$);
-        isLoaded = await readFirst(facade.loaded$);
-
-        expect(list.length).toBe(0);
-        expect(isLoaded).toBe(true);
-
-        done();
-      } catch (err) {
-        done.fail(err);
-      }
-    });
-
-    /**
-     * Use `loadCoursesSuccess` to manually update list
-     */
-    it('allCourses$ should return the loaded list; and loaded flag == true', async (done) => {
-      try {
-        let list = await readFirst(facade.allCourses$);
-        let isLoaded = await readFirst(facade.loaded$);
-
-        expect(list.length).toBe(0);
-        expect(isLoaded).toBe(false);
-
-        facade.dispatch(
-          CoursesActions.loadCoursesSuccess({
-            courses: [createCoursesEntity('AAA'), createCoursesEntity('BBB')],
-          })
-        );
-
-        list = await readFirst(facade.allCourses$);
-        isLoaded = await readFirst(facade.loaded$);
-
-        expect(list.length).toBe(2);
-        expect(isLoaded).toBe(true);
-
-        done();
-      } catch (err) {
-        done.fail(err);
-      }
-    });
+    facade = TestBed.inject(CoursesFacade);
+    store = TestBed.inject(Store);
   });
+
+  it('should be created', () => {
+    expect(facade).toBeTruthy();
+  });
+
+  describe('should dispatch', () => {
+
+    it('select on select(course.id)', () => {
+      const spy = jest.spyOn(store, 'dispatch');
+
+      facade.selectCourse(mockCourse.id);
+
+      const action = CoursesActions.selectCourse({ selectedId: mockCourse.id});
+
+      expect(spy).toHaveBeenCalledWith(action);
+    })
+
+    it('loadCourses on loadCourses()', () => {
+      const spy = jest.spyOn(store, 'dispatch');
+
+      facade.loadCourses();
+
+      const action = CoursesActions.loadCourses();
+
+      expect(spy).toHaveBeenCalledWith(action);
+    })
+
+    it('loadCourse on loadCourse(course.id)', () => {
+      const spy = jest.spyOn(store, 'dispatch');
+
+      facade.loadCourse(mockCourse.id);
+
+      const action = CoursesActions.loadCourse({ courseId: mockCourse.id });
+
+      expect(spy).toHaveBeenCalledWith(action);
+    })
+
+    it('createCourse on createCourse(course)', () => {
+      const spy = jest.spyOn(store, 'dispatch');
+
+      facade.createCourse(mockCourse);
+
+      const action = CoursesActions.createCourse({ course: mockCourse });
+
+      expect(spy).toHaveBeenCalledWith(action);
+    })
+
+    it('updateCourse on updateCourse(course)', () => {
+      const spy = jest.spyOn(store, 'dispatch');
+
+      facade.updateCourse(mockCourse);
+
+      const action = CoursesActions.updateCourse({ course: mockCourse });
+
+      expect(spy).toHaveBeenCalledWith(action);
+    })
+
+    it('delete on delete(model)', () => {
+      const spy = jest.spyOn(store, 'dispatch');
+
+      facade.deleteCourse(mockCourse);
+
+      const action = CoursesActions.deleteCourse({ course: mockCourse });
+
+      expect(spy).toHaveBeenCalledWith(action);
+    })
+  })
+
 });

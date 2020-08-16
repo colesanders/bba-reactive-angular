@@ -1,28 +1,34 @@
-import { UsersEntity } from './users.models';
-import { State, usersAdapter, initialState } from './users.reducer';
+import { 
+  UsersState, 
+  usersAdapter, 
+  initialUsersState } from './users.reducer';
 import * as UsersSelectors from './users.selectors';
+import { User } from '@bba/api-interfaces';
 
 describe('Users Selectors', () => {
   const ERROR_MSG = 'No Error Available';
   const getUsersId = (it) => it['id'];
-  const createUsersEntity = (id: string, name = '') =>
+  const createUser = (id: string, name = '') =>
     ({
       id,
-      name: name || `name-${id}`,
-    } as UsersEntity);
+      firstName: name || `name-${id}`,
+      lastName: '',
+      email: '',
+      password: ''
+    } as User);
 
   let state;
 
   beforeEach(() => {
     state = {
-      users: usersAdapter.addAll(
+      users: usersAdapter.setAll(
         [
-          createUsersEntity('PRODUCT-AAA'),
-          createUsersEntity('PRODUCT-BBB'),
-          createUsersEntity('PRODUCT-CCC'),
+          createUser('PRODUCT-AAA'),
+          createUser('PRODUCT-BBB'),
+          createUser('PRODUCT-CCC'),
         ],
         {
-          ...initialState,
+          ...initialUsersState,
           selectedId: 'PRODUCT-BBB',
           error: ERROR_MSG,
           loaded: true,
@@ -41,7 +47,7 @@ describe('Users Selectors', () => {
     });
 
     it('getSelected() should return the selected Entity', () => {
-      const result = UsersSelectors.getSelected(state);
+      const result = UsersSelectors.getSelectedUser(state);
       const selId = getUsersId(result);
 
       expect(selId).toBe('PRODUCT-BBB');

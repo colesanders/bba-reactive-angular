@@ -10,10 +10,13 @@ import { hot } from '@nrwl/angular/testing';
 
 import { LessonsEffects } from './lessons.effects';
 import * as LessonsActions from './lessons.actions';
+import { LessonsService } from '@bba/core-data';
+import { mockLessonsService } from '../tests.mocks';
 
 describe('LessonsEffects', () => {
   let actions: Observable<any>;
   let effects: LessonsEffects;
+  let service: LessonsService
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -23,10 +26,16 @@ describe('LessonsEffects', () => {
         DataPersistence,
         provideMockActions(() => actions),
         provideMockStore(),
+        { provide: LessonsService, useValue: mockLessonsService },
       ],
     });
 
-    effects = TestBed.get(LessonsEffects);
+    effects = TestBed.inject(LessonsEffects);
+    service = TestBed.inject(LessonsService);
+  });
+
+  it('should be created', () => {
+    expect(effects).toBeTruthy();
   });
 
   describe('loadLessons$', () => {

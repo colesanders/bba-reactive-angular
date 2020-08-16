@@ -35,12 +35,8 @@ export const getSelectedCourseId = createSelector(
   (state: CoursesState) => state.selectedId
 );
 
-const emptyCourse: Course = { id: null, title: '', description: '' };
-
 export const getSelectedCourse = createSelector(
   getCoursesEntities,
   getSelectedCourseId,
-  (entities, selectedId) => {
-    return selectedId ? entities[selectedId] : emptyCourse;
-  }
+  (entities, selectedId) => selectedId && entities[selectedId]
 );

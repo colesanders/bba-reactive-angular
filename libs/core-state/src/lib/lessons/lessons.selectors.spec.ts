@@ -1,28 +1,34 @@
-import { LessonsEntity } from './lessons.models';
-import { State, lessonsAdapter, initialState } from './lessons.reducer';
+import { 
+  LessonsState, 
+  lessonsAdapter, 
+  initialLessonsState } from './lessons.reducer';
 import * as LessonsSelectors from './lessons.selectors';
+import { Lesson } from '@bba/api-interfaces';
 
 describe('Lessons Selectors', () => {
   const ERROR_MSG = 'No Error Available';
   const getLessonsId = (it) => it['id'];
-  const createLessonsEntity = (id: string, name = '') =>
+  const createLesson = (id: string, name = '') =>
     ({
       id,
       name: name || `name-${id}`,
-    } as LessonsEntity);
+      title: '',
+      description: '',
+      course_id: '',
+    } as Lesson);
 
   let state;
 
   beforeEach(() => {
     state = {
-      lessons: lessonsAdapter.addAll(
+      lessons: lessonsAdapter.setAll(
         [
-          createLessonsEntity('PRODUCT-AAA'),
-          createLessonsEntity('PRODUCT-BBB'),
-          createLessonsEntity('PRODUCT-CCC'),
+          createLesson('PRODUCT-AAA'),
+          createLesson('PRODUCT-BBB'),
+          createLesson('PRODUCT-CCC'),
         ],
         {
-          ...initialState,
+          ...initialLessonsState,
           selectedId: 'PRODUCT-BBB',
           error: ERROR_MSG,
           loaded: true,
@@ -41,7 +47,7 @@ describe('Lessons Selectors', () => {
     });
 
     it('getSelected() should return the selected Entity', () => {
-      const result = LessonsSelectors.getSelected(state);
+      const result = LessonsSelectors.getSelectedLesson(state);
       const selId = getLessonsId(result);
 
       expect(selId).toBe('PRODUCT-BBB');
