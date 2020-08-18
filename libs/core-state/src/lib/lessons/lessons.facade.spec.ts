@@ -31,25 +31,14 @@ describe("LessonsFacade", () => {
     expect(facade).toBeTruthy();
   });
 
-  it("should have no mutations", () => {
-    let result;
-    facade.mutations$.subscribe((ret) => {
-      result = ret;
-    });
-
-    expect(result).toBe(undefined);
-  });
-
-  it("should have mutations", () => {
+  it("should have mutations", (done) => {
     const action = LessonsActions.createLesson({ lesson: mockLesson });
     actionSubject.next(action);
 
-    let result;
-    facade.mutations$.subscribe((ret) => {
-      result = ret;
+    facade.mutations$.subscribe((result) => {
+      expect(result).toBe(action);
+      done();
     });
-
-    expect(result).toBe(action);
   });
 
   describe("should dispatch", () => {

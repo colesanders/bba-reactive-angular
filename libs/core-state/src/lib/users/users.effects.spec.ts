@@ -1,17 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-
-import { Observable } from 'rxjs';
-
 import { provideMockActions } from '@ngrx/effects/testing';
-import { provideMockStore } from '@ngrx/store/testing';
-
 import { NxModule, DataPersistence } from '@nrwl/angular';
 import { hot, cold } from '@nrwl/angular/testing';
+
+import { Observable } from 'rxjs';
 
 import { UsersEffects } from './users.effects';
 import * as UsersActions from './users.actions';
 import { UsersService } from '@bba/core-data';
+
 import { mockUsersService, mockUser } from '@bba/testing';
+import { User } from '@bba/api-interfaces';
 
 describe('UsersEffects', () => {
   let actions: Observable<any>;
@@ -25,7 +24,6 @@ describe('UsersEffects', () => {
         UsersEffects,
         DataPersistence,
         provideMockActions(() => actions),
-        provideMockStore(),
         { provide: UsersService, useValue: mockUsersService },
       ],
     });
@@ -39,133 +37,146 @@ describe('UsersEffects', () => {
   });
 
   describe('loadUsers$', () => {
-    it('should work', () => {
-      actions = hot('-a-|', { a: UsersActions.loadUsers() });
+    it('should return loadUsersSuccess, on success', () => {
+      const users: User[] = [];
+      const action = UsersActions.loadUsers();
+      const outcome = UsersActions.loadUsersSuccess({ users });
 
-      const expected = hot('-a-|', {
-        a: UsersActions.loadUsersSuccess({ users: [] }),
-      });
+      actions = hot('-a', { a: action });
+      const response = cold('-a|', { a: users });
+      const expected = cold('--b', { b: outcome });
+      service.all = jest.fn(() => response);
 
       expect(effects.loadUsers$).toBeObservable(expected);
     });
 
-    it('should not work', () => {
-      actions = hot('-a', { a: UsersActions.loadUsers() });
+    it('should return loadUsersFailure, on failure', () => {
+      const action = UsersActions.loadUsers();
+      const error = new Error();
+      const outcome = UsersActions.loadUsersFailure({ error });
 
-      const error = new Error('mockError') as any;
-      const response = cold('-#|', {}, error)
-
-      const spy = jest.spyOn(service, 'all');
-      spy.mockReturnValue(response);
-
-      const expected = cold('--b', { b: UsersActions.loadUsersFailure({ error }) });
+      actions = hot('-a', { a: action });
+      const response = cold('-#|', {}, error);
+      const expected = cold('--b', { b: outcome });
+      service.all = jest.fn(() => response);
 
       expect(effects.loadUsers$).toBeObservable(expected);
     });
   });
 
   describe('loadUser$', () => {
-    it('should work', () => {
-      actions = hot('-a-|', { a: UsersActions.loadUser({ userId: mockUser.id }) });
+    it('should return success with user', () => {
+      const user = { ...mockUser };
+      const action = UsersActions.loadUser({ userId: user.id });
+      const outcome = UsersActions.loadUserSuccess({ user });
 
-      const expected = hot('-a-|', {
-        a: UsersActions.loadUserSuccess({ user: {...mockUser} }),
-      });
+      actions = hot('-a', { a: action });
+      const response = cold('-a|', { a: user });
+      const expected = cold('--b', { b: outcome });
+      service.find = jest.fn(() => response);
 
       expect(effects.loadUser$).toBeObservable(expected);
     });
 
-    it('should not work', () => {
-      actions = hot('-a', { a: UsersActions.loadUser({userId: mockUser.id}) });
+    it('should return failure', () => {
+      const user = { ...mockUser };
+      const action = UsersActions.loadUser({ userId: user.id });
+      const error = new Error();
+      const outcome = UsersActions.loadUserFailure({ error });
 
-      const error = new Error('mockError') as any;
-      const response = cold('-#|', {}, error)
-
-      const spy = jest.spyOn(service, 'find');
-      spy.mockReturnValue(response);
-
-      const expected = cold('--b', { b: UsersActions.loadUserFailure({ error }) });
+      actions = hot('-a', { a: action });
+      const response = cold('-#|', {}, error);
+      const expected = cold('--b', { b: outcome });
+      service.find = jest.fn(() => response);
 
       expect(effects.loadUser$).toBeObservable(expected);
     });
   });
 
   describe('createUser$', () => {
-    it('should work', () => {
-      actions = hot('-a-|', { a: UsersActions.createUser({ user: mockUser }) });
+    it('should return success with user', () => {
+      const user = { ...mockUser };
+      const action = UsersActions.createUser({ user });
+      const outcome = UsersActions.createUserSuccess({ user });
 
-      const expected = hot('-a-|', {
-        a: UsersActions.createUserSuccess({ user: {...mockUser} }),
-      });
+      actions = hot('-a', { a: action });
+      const response = cold('-a|', { a: user });
+      const expected = cold('--b', { b: outcome });
+      service.create = jest.fn(() => response);
 
       expect(effects.createUser$).toBeObservable(expected);
     });
 
-    it('should not work', () => {
-      actions = hot('-a', { a: UsersActions.createUser({ user: mockUser }) });
+    it('should return failure', () => {
+      const user = { ...mockUser };
+      const action = UsersActions.createUser({ user });
+      const error = new Error();
+      const outcome = UsersActions.createUserFailure({ error });
 
-      const error = new Error('mockError') as any;
-      const response = cold('-#|', {}, error)
-
-      const spy = jest.spyOn(service, 'create');
-      spy.mockReturnValue(response);
-
-      const expected = cold('--b', { b: UsersActions.createUserFailure({ error }) });
+      actions = hot('-a', { a: action });
+      const response = cold('-#|', {}, error);
+      const expected = cold('--b', { b: outcome });
+      service.create = jest.fn(() => response);
 
       expect(effects.createUser$).toBeObservable(expected);
     });
   });
 
   describe('updateUser$', () => {
-    it('should work', () => {
-      actions = hot('-a-|', { a: UsersActions.updateUser({ user: mockUser }) });
+    it('should return success with user', () => {
+      const user = { ...mockUser };
+      const action = UsersActions.updateUser({ user });
+      const outcome = UsersActions.updateUserSuccess({ user });
 
-      const expected = hot('-a-|', {
-        a: UsersActions.updateUserSuccess({ user: {...mockUser} }),
-      });
+      actions = hot('-a', { a: action });
+      const response = cold('-a|', { a: user });
+      const expected = cold('--b', { b: outcome });
+      service.update = jest.fn(() => response);
 
       expect(effects.updateUser$).toBeObservable(expected);
     });
 
-    it('should not work', () => {
-      actions = hot('-a', { a: UsersActions.updateUser({ user: mockUser }) });
+    it('should return failure', () => {
+      const user = { ...mockUser };
+      const action = UsersActions.updateUser({ user });
+      const error = new Error();
+      const outcome = UsersActions.updateUserFailure({ error });
 
-      const error = new Error('mockError') as any;
-      const response = cold('-#|', {}, error)
-
-      const spy = jest.spyOn(service, 'update');
-      spy.mockReturnValue(response);
-
-      const expected = cold('--b', { b: UsersActions.updateUserFailure({ error }) });
+      actions = hot('-a', { a: action });
+      const response = cold('-#|', {}, error);
+      const expected = cold('--b', { b: outcome });
+      service.update = jest.fn(() => response);
 
       expect(effects.updateUser$).toBeObservable(expected);
     });
   });
 
   describe('deleteUser$', () => {
-    it('should work', () => {
-      actions = hot('-a-|', { a: UsersActions.deleteUser({ user: mockUser }) });
+    it('should return success with user', () => {
+      const user = { ...mockUser };
+      const action = UsersActions.deleteUser({ user });
+      const outcome = UsersActions.deleteUserSuccess({ user });
 
-      const expected = hot('-a-|', {
-        a: UsersActions.deleteUserSuccess({ user: {...mockUser} }),
-      });
+      actions = hot('-a', { a: action });
+      const response = cold('-a|', { a: user });
+      const expected = cold('--b', { b: outcome });
+      service.delete = jest.fn(() => response);
 
       expect(effects.deleteUser$).toBeObservable(expected);
     });
 
-    it('should not work', () => {
-      actions = hot('-a', { a: UsersActions.deleteUser({ user: mockUser }) });
+    it('should return failure', () => {
+      const user = { ...mockUser };
+      const action = UsersActions.deleteUser({ user });
+      const error = new Error();
+      const outcome = UsersActions.deleteUserFailure({ error });
 
-      const error = new Error('mockError') as any;
-      const response = cold('-#|', {}, error)
-
-      const spy = jest.spyOn(service, 'delete');
-      spy.mockReturnValue(response);
-
-      const expected = cold('--b', { b: UsersActions.deleteUserFailure({ error }) });
+      actions = hot('-a', { a: action });
+      const response = cold('-#|', {}, error);
+      const expected = cold('--b', { b: outcome });
+      service.delete = jest.fn(() => response);
 
       expect(effects.deleteUser$).toBeObservable(expected);
     });
   });
-
 });
