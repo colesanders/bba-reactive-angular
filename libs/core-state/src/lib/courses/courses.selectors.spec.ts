@@ -1,20 +1,12 @@
-import { 
-  CoursesState, 
-  coursesAdapter, 
-  initialCoursesState } from './courses.reducer';
-import * as CoursesSelectors from './courses.selectors';
-import { Course } from '@bba/api-interfaces';
+import { CoursesState, coursesAdapter, initialCoursesState } from "./courses.reducer";
+import * as CoursesSelectors from "./courses.selectors";
+import { Course } from "@bba/api-interfaces";
+import { mockCourse } from "@bba/testing";
 
-describe('Courses Selectors', () => {
-  const ERROR_MSG = 'No Error Available';
-  const getCoursesId = (it) => it['id'];
-  const createCourse = (id: string, name = '') =>
-    ({
-      id,
-      name: name || `name-${id}`,
-      title: '',
-      description: '',
-    } as Course);
+describe("Courses Selectors", () => {
+  const ERROR_MSG = "No Error Available";
+  const getCoursesId = (it) => it["id"];
+  const createCourse = (id: string, name = "") => ({ ...mockCourse, id: id } as Course);
 
   let state;
 
@@ -22,13 +14,13 @@ describe('Courses Selectors', () => {
     state = {
       courses: coursesAdapter.setAll(
         [
-          createCourse('PRODUCT-AAA'),
-          createCourse('PRODUCT-BBB'),
-          createCourse('PRODUCT-CCC'),
+          createCourse("PRODUCT-AAA"),
+          createCourse("PRODUCT-BBB"),
+          createCourse("PRODUCT-CCC"),
         ],
         {
           ...initialCoursesState,
-          selectedId: 'PRODUCT-BBB',
+          selectedId: "PRODUCT-BBB",
           error: ERROR_MSG,
           loaded: true,
         }
@@ -36,20 +28,20 @@ describe('Courses Selectors', () => {
     };
   });
 
-  describe('Courses Selectors', () => {
-    it('getAllCourses() should return the list of Courses', () => {
+  describe("Courses Selectors", () => {
+    it("getAllCourses() should return the list of Courses", () => {
       const results = CoursesSelectors.getAllCourses(state);
       const selId = getCoursesId(results[1]);
 
       expect(results.length).toBe(3);
-      expect(selId).toBe('PRODUCT-BBB');
+      expect(selId).toBe("PRODUCT-BBB");
     });
 
-    it('getSelected() should return the selected Entity', () => {
+    it("getSelected() should return the selected Entity", () => {
       const result = CoursesSelectors.getSelectedCourse(state);
       const selId = getCoursesId(result);
 
-      expect(selId).toBe('PRODUCT-BBB');
+      expect(selId).toBe("PRODUCT-BBB");
     });
 
     it("getCoursesLoaded() should return the current 'loaded' status", () => {

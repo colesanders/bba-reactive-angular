@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { Observable } from 'rxjs';
 
@@ -11,12 +11,12 @@ import { hot, cold } from '@nrwl/angular/testing';
 import { LessonsEffects } from './lessons.effects';
 import * as LessonsActions from './lessons.actions';
 import { LessonsService } from '@bba/core-data';
-import { mockLessonsService, mockLesson } from '../tests.mocks';
+import { mockLessonsService, mockLesson } from '@bba/testing';
 
 describe('LessonsEffects', () => {
   let actions: Observable<any>;
   let effects: LessonsEffects;
-  let service: LessonsService
+  let service: LessonsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

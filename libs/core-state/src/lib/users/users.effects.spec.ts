@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { Observable } from 'rxjs';
 
@@ -11,12 +11,12 @@ import { hot, cold } from '@nrwl/angular/testing';
 import { UsersEffects } from './users.effects';
 import * as UsersActions from './users.actions';
 import { UsersService } from '@bba/core-data';
-import { mockUsersService, mockUser } from '../tests.mocks';
+import { mockUsersService, mockUser } from '@bba/testing';
 
 describe('UsersEffects', () => {
   let actions: Observable<any>;
   let effects: UsersEffects;
-  let service: UsersService
+  let service: UsersService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
