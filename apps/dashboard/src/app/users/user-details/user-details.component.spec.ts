@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { UserDetailsComponent } from './user-details.component';
-import { MaterialModule } from '@bba/material';
 import { FormsModule } from '@angular/forms';
-import { mockUser } from '../../tests.mocks';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { User } from '@bba/api-interfaces';
+import { MaterialModule } from '@bba/material';
+import { UserDetailsComponent } from './user-details.component';
+import { mockUser } from '@bba/testing';
 
 describe('UserDetailsComponent', () => {
   let component: UserDetailsComponent;
@@ -12,14 +12,15 @@ describe('UserDetailsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserDetailsComponent ],
+      declarations: [
+        UserDetailsComponent
+      ],
       imports: [
-        MaterialModule,
         FormsModule,
+        MaterialModule,
         NoopAnimationsModule,
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

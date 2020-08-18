@@ -1,14 +1,19 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { LessonsComponent } from './lessons.component';
-import { MaterialModule } from '@bba/material';
-import { LessonsListComponent } from './lessons-list/lessons-list.component';
-import { LessonDetailsComponent } from './lesson-details/lesson-details.component';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { LessonsFacade } from '@bba/core-state';
-import { mockLessonsFacade, mockLesson, mockEmptyLesson } from '../tests.mocks';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement } from '@angular/core';
+
+import { CoreDataModule } from '@bba/core-data';
+import { CoreStateModule, LessonsFacade } from '@bba/core-state';
+import { MaterialModule } from '@bba/material';
+
+import { LessonDetailsComponent } from './lesson-details/lesson-details.component';
+import { LessonsListComponent } from './lessons-list/lessons-list.component';
+import { LessonsComponent } from './lessons.component';
+
+import { mockLesson, mockEmptyLesson } from '@bba/testing';
 
 describe('LessonsComponent', () => {
   let component: LessonsComponent;
@@ -18,28 +23,28 @@ describe('LessonsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         LessonsComponent,
-        LessonsListComponent,
         LessonDetailsComponent,
+        LessonsListComponent,
       ],
       imports: [
-        MaterialModule,
+        CoreDataModule,
+        CoreStateModule,
         FormsModule,
+        MaterialModule,
+        HttpClientTestingModule,
         NoopAnimationsModule,
+        RouterTestingModule,
       ],
-      providers: [
-        { provide: LessonsFacade, useValue: mockLessonsFacade}
-      ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LessonsComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
-    lessonsFacade = de.injector.get(LessonsFacade);
+    lessonsFacade = TestBed.inject(LessonsFacade);
     fixture.detectChanges();
   });
 
@@ -52,7 +57,7 @@ describe('LessonsComponent', () => {
 
     component.selectLesson(mockLesson);
 
-    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(mockLesson.id);
   })
 
   describe('should on save call lessonsFacade', () => {
@@ -61,7 +66,7 @@ describe('LessonsComponent', () => {
 
       component.saveLesson(mockLesson);
 
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledWith(mockLesson);
     })
 
     it('createLesson', () => {
@@ -69,7 +74,7 @@ describe('LessonsComponent', () => {
 
       component.saveLesson(mockEmptyLesson);
 
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledWith(mockEmptyLesson);
     })
   })
 
@@ -78,6 +83,6 @@ describe('LessonsComponent', () => {
 
     component.deleteLesson(mockLesson);
 
-    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(mockLesson);
   })
 });

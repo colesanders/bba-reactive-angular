@@ -1,20 +1,17 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { MaterialModule } from "@bba/material";
+import { CoursesListComponent } from "./courses-list.component";
 
-import { CoursesListComponent } from './courses-list.component';
-import { MaterialModule } from '@bba/material';
-
-describe('CoursesListComponent', () => {
+describe("CoursesListComponent", () => {
   let component: CoursesListComponent;
   let fixture: ComponentFixture<CoursesListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CoursesListComponent ],
-      imports: [
-        MaterialModule,
-      ],
-    })
-    .compileComponents();
+      declarations: [CoursesListComponent],
+      imports: [MaterialModule, NoopAnimationsModule],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -23,7 +20,7 @@ describe('CoursesListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
