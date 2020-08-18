@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { CourseDetailsComponent } from './course-details.component';
-import { MaterialModule } from '@bba/material';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { mockCourse } from '../../tests.mocks';
+import { Course } from '@bba/api-interfaces';
+import { MaterialModule } from '@bba/material';
+import { CourseDetailsComponent } from './course-details.component';
+import { mockCourse } from '@bba/testing';
 
 describe('CourseDetailsComponent', () => {
   let component: CourseDetailsComponent;
@@ -12,14 +12,15 @@ describe('CourseDetailsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CourseDetailsComponent ],
-      imports: [
-        MaterialModule,
-        FormsModule,
-        NoopAnimationsModule
+      declarations: [
+        CourseDetailsComponent
       ],
-    })
-    .compileComponents();
+      imports: [
+        FormsModule,
+        MaterialModule,
+        NoopAnimationsModule,
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
