@@ -1,14 +1,19 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { UsersComponent } from './users.component';
-import { MaterialModule } from '@bba/material';
-import { UsersListComponent } from './users-list/users-list.component';
-import { UserDetailsComponent } from './user-details/user-details.component';
 import { FormsModule } from '@angular/forms';
-import { UsersFacade } from '@bba/core-state';
-import { mockUsersFacade, mockUser, mockEmptyUser } from '../tests.mocks';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement } from '@angular/core';
+
+import { CoreDataModule } from '@bba/core-data';
+import { CoreStateModule, UsersFacade } from '@bba/core-state';
+import { MaterialModule } from '@bba/material';
+
+import { UserDetailsComponent } from './user-details/user-details.component';
+import { UsersListComponent } from './users-list/users-list.component';
+import { UsersComponent } from './users.component';
+
+import { mockUser, mockEmptyUser } from '@bba/testing';
 
 describe('UsersComponent', () => {
   let component: UsersComponent;
@@ -18,28 +23,28 @@ describe('UsersComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         UsersComponent,
-        UsersListComponent,
         UserDetailsComponent,
+        UsersListComponent,
       ],
       imports: [
-        MaterialModule,
+        CoreDataModule,
+        CoreStateModule,
         FormsModule,
+        MaterialModule,
+        HttpClientTestingModule,
         NoopAnimationsModule,
+        RouterTestingModule,
       ],
-      providers: [
-        { provide: UsersFacade, useValue: mockUsersFacade}
-      ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UsersComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
-    usersFacade = de.injector.get(UsersFacade);
+    usersFacade = TestBed.inject(UsersFacade);
     fixture.detectChanges();
   });
 
@@ -52,7 +57,7 @@ describe('UsersComponent', () => {
 
     component.selectUser(mockUser);
 
-    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(mockUser.id);
   })
 
   describe('should on save call usersFacade', () => {
@@ -61,7 +66,7 @@ describe('UsersComponent', () => {
 
       component.saveUser(mockUser);
 
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledWith(mockUser);
     })
 
     it('createUser', () => {
@@ -69,7 +74,7 @@ describe('UsersComponent', () => {
 
       component.saveUser(mockEmptyUser);
 
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledWith(mockEmptyUser);
     })
   })
 
@@ -78,6 +83,6 @@ describe('UsersComponent', () => {
 
     component.deleteUser(mockUser);
 
-    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(mockUser);
   })
 });
