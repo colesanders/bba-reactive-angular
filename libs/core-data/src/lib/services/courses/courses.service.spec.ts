@@ -4,11 +4,10 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { CoursesService } from './courses.service';
-import { ServiceSpecUrl, mockCourse } from '@bba/testing';
+import { mockCourse } from '@bba/testing';
 
 describe('CoursesService', () => {
   const model = 'courses';
-  const serviceSpecUrl: ServiceSpecUrl = new ServiceSpecUrl(model);
   let httpTestingController: HttpTestingController;
   let service: CoursesService;
 
@@ -26,46 +25,56 @@ describe('CoursesService', () => {
 
   describe('should call http.', () => {
     it('get() on service.all()', () => {
-      service.all().subscribe();
+      service.all().subscribe((res) => {
+        expect(res).toEqual({ ...mockCourse });
+      });
 
-      const req = httpTestingController.expectOne(serviceSpecUrl.getUrl());
+      const req = httpTestingController.expectOne(service['getUrl']());
       req.flush([{ ...mockCourse }]);
       httpTestingController.verify();
     });
 
     it('get(url(model.id)) on service.find(model.id)', () => {
-      service.find(mockCourse.id).subscribe();
+      service.find(mockCourse.id).subscribe((res) => {
+        expect(res).toEqual({ ...mockCourse });
+      });
 
       const req = httpTestingController.expectOne(
-        serviceSpecUrl.getUrlWithId(mockCourse.id)
+        service['getUrlWithId'](mockCourse.id)
       );
       req.flush({ ...mockCourse });
       httpTestingController.verify();
     });
 
     it('post(url, model) on service.create(model)', () => {
-      service.create(mockCourse).subscribe();
+      service.create(mockCourse).subscribe((res) => {
+        expect(res).toEqual({ ...mockCourse });
+      });
 
-      const req = httpTestingController.expectOne(serviceSpecUrl.getUrl());
+      const req = httpTestingController.expectOne(service['getUrl']());
       req.flush({ ...mockCourse });
       httpTestingController.verify();
     });
 
     it('put(url(model.id), model) on service.create(model)', () => {
-      service.update(mockCourse).subscribe();
+      service.update(mockCourse).subscribe((res) => {
+        expect(res).toEqual({ ...mockCourse });
+      });
 
       const req = httpTestingController.expectOne(
-        serviceSpecUrl.getUrlWithId(mockCourse.id)
+        service['getUrlWithId'](mockCourse.id)
       );
       req.flush({ ...mockCourse });
       httpTestingController.verify();
     });
 
     it('delete(url(model.id)) on service.delete(model.id)', () => {
-      service.delete(mockCourse.id).subscribe();
+      service.delete(mockCourse.id).subscribe((res) => {
+        expect(res).toEqual({ ...mockCourse });
+      });
 
       const req = httpTestingController.expectOne(
-        serviceSpecUrl.getUrlWithId(mockCourse.id)
+        service['getUrlWithId'](mockCourse.id)
       );
       req.flush({ ...mockCourse });
       httpTestingController.verify();
