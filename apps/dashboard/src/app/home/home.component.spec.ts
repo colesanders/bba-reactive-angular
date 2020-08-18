@@ -1,10 +1,12 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { HomeComponent } from './home.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { CoreDataModule } from '@bba/core-data';
+import { CoreStateModule } from '@bba/core-state';
 import { MaterialModule } from '@bba/material';
+import { CoursesListComponent } from '../courses/courses-list/courses-list.component';
 import { LessonsListComponent } from '../lessons/lessons-list/lessons-list.component';
-import { CoursesFacade, LessonsFacade } from '@bba/core-state';
-import { mockCoursesFacade, mockLessonsFacade } from '../tests.mocks';
+import { HomeComponent } from './home.component';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -12,19 +14,15 @@ describe('HomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
-        HomeComponent,
-        LessonsListComponent,
-      ],
+      declarations: [HomeComponent, CoursesListComponent, LessonsListComponent],
       imports: [
+        CoreDataModule,
+        CoreStateModule,
         MaterialModule,
+        HttpClientTestingModule,
+        RouterTestingModule,
       ],
-      providers: [
-        { provide: CoursesFacade, useValue: mockCoursesFacade },
-        { provide: LessonsFacade, useValue: mockLessonsFacade },
-      ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

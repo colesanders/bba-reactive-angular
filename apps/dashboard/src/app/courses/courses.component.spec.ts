@@ -1,14 +1,19 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { CoursesComponent } from './courses.component';
-import { MaterialModule } from '@bba/material';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { CoursesListComponent } from './courses-list/courses-list.component';
-import { CourseDetailsComponent } from './course-details/course-details.component';
-import { CoursesFacade } from '@bba/core-state';
-import { mockCoursesFacade, mockCourse, mockEmptyCourse } from '../tests.mocks';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement } from '@angular/core';
+
+import { CoreDataModule } from '@bba/core-data';
+import { CoreStateModule, CoursesFacade } from '@bba/core-state';
+import { MaterialModule } from '@bba/material';
+
+import { CourseDetailsComponent } from './course-details/course-details.component';
+import { CoursesListComponent } from './courses-list/courses-list.component';
+import { CoursesComponent } from './courses.component';
+
+import { mockCourse, mockEmptyCourse } from '@bba/testing';
 
 describe('CoursesComponent', () => {
   let component: CoursesComponent;
@@ -18,28 +23,28 @@ describe('CoursesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         CoursesComponent,
-        CoursesListComponent,
         CourseDetailsComponent,
+        CoursesListComponent,
       ],
       imports: [
-        MaterialModule,
+        CoreDataModule,
+        CoreStateModule,
         FormsModule,
-        NoopAnimationsModule
+        MaterialModule,
+        HttpClientTestingModule,
+        NoopAnimationsModule,
+        RouterTestingModule,
       ],
-      providers: [
-        { provide: CoursesFacade, useValue: mockCoursesFacade },
-      ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CoursesComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
-    coursesFacade = de.injector.get(CoursesFacade);
+    coursesFacade = TestBed.inject(CoursesFacade);
     fixture.detectChanges();
   });
 
@@ -52,7 +57,7 @@ describe('CoursesComponent', () => {
 
     component.selectCourse(mockCourse);
 
-    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(mockCourse.id);
   })
 
   describe('should on save call coursesFacade', () => {
@@ -61,18 +66,15 @@ describe('CoursesComponent', () => {
 
       component.saveCourse(mockCourse);
 
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledWith(mockCourse);
     })
 
     it('createCourse', () => {
-      // assign
       const spy = jest.spyOn(coursesFacade, 'createCourse');
 
-      // act 
       component.saveCourse(mockEmptyCourse);
 
-      // assert
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledWith(mockEmptyCourse);
     })
   })
 
@@ -81,6 +83,6 @@ describe('CoursesComponent', () => {
 
     component.deleteCourse(mockCourse);
 
-    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(mockCourse);
   })
 });
